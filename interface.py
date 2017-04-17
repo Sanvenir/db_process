@@ -140,7 +140,7 @@ class MainWindow(QMainWindow):
             plt.plot(self.data.daily_production[self.current_start_time:self.current_end_time],
                      label="Daily Production".format(self.spindle_id))
             plt.plot(100 * self.data.daily_qualified_production[self.current_start_time:self.current_end_time] /
-                     (self.data.daily_production[self.current_start_time:self.current_end_time] + 0.2),
+                     (self.data.daily_production[self.current_start_time:self.current_end_time]),
                      label="Qualification Ratio".format(self.spindle_id))
             plt.legend()
             plt.show()
@@ -189,11 +189,12 @@ class MainWindow(QMainWindow):
             spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("查询枪号"), 1, 1, 22)
             if not ok:
                 return
+            import pypyodbc
             try:
                 self.data = ScrewingDataProcess(
                     file_name, table_name, spindle_id, text_out=self.ui.statusBar.showMessage)
                 break
-            except Exception as err:
+            except  pypyodbc.Error as err:
                 msg_box = QtWidgets.QMessageBox()
                 msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
                 msg_box.exec_()
@@ -431,7 +432,7 @@ class MainWindow(QMainWindow):
                                 label="Daily Production".format(self.spindle_id))
         self.ax_production.legend()
         self.ax_qualification.plot(self.data.daily_qualified_production[self.current_start_time:self.current_end_time] /
-                                   (self.data.daily_production[self.current_start_time:self.current_end_time] + 0.2),
+                                   (self.data.daily_production[self.current_start_time:self.current_end_time]),
                                    label="Qualification Ratio".format(self.spindle_id))
         self.ax_qualification.legend()
         self.figure_canvas_production.draw()

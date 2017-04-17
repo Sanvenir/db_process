@@ -1,6 +1,7 @@
 #!/usr/bin/python  
 # -*- coding: utf-8 -*-  
 from pandas import Series
+from numpy import NaN
 
 from config import SERIES_NUM, DIVIDE_TIME
 from database import ScrewingDataBase
@@ -32,9 +33,9 @@ class ScrewingDataProcess(object):
         self.text_out("生成处理数列")
 
         # 获取每日产量数据
-        self.daily_production = self.total_data.resample('D').count()
+        self.daily_production = self.total_data.resample('D').apply(self._count_function)
         # 获取每日合格产量数据
-        self.daily_qualified_production = self.total_normal_data.resample('D').count()
+        self.daily_qualified_production = self.total_normal_data.resample('D').apply(self._count_function)
 
         # 获取分组数据中每一组的开始日期
         self.part_date = [part.first_valid_index() for part in self.part_series]
@@ -42,6 +43,11 @@ class ScrewingDataProcess(object):
         self.part_mean = [part.mean() for part in self.part_series]
         # 获取分组数据中每一组的标准差
         self.part_std = [part.std() for part in self.part_series]
+
+    @staticmethod
+    def _count_function(array_like):
+        if len(array_like):
+            return len(array_like)
 
     def _dividing_total_data(self):
         """
@@ -71,3 +77,5 @@ class ScrewingDataProcess(object):
 
         return part_series
 
+if __name__ == "__main__":
+    data = ScrewingDataProcess(r"C:\Users\sanve\Documents\Learn\db_process_v1.10\拧紧.accdb", "Screwing", 1)
