@@ -431,14 +431,73 @@ class MainWindow(QMainWindow):
         self.ax_production.plot(self.data.daily_production[self.current_start_time:self.current_end_time],
                                 label="Daily Production".format(self.spindle_id))
         self.ax_production.legend()
-        self.ax_qualification.plot(self.data.daily_qualified_production[self.current_start_time:self.current_end_time] /
-                                   (self.data.daily_production[self.current_start_time:self.current_end_time]),
-                                   label="Qualification Ratio".format(self.spindle_id))
+        self.ax_qualification.fill_between(
+            self.data.daily_production[self.current_start_time:self.current_end_time].index,
+            self.data.daily_qualified_production[self.current_start_time:self.current_end_time] /
+            self.data.daily_production[self.current_start_time:self.current_end_time])
+        self.ax_qualification.set_ylabel("Qualification Ratio")
+        self.ax_qualification.set_ylim(0.8, 1.0);
         self.ax_qualification.legend()
         self.figure_canvas_production.draw()
         self.ui.actionClear_ALL.setEnabled(True)
 
 if __name__ == "__main__":
+    def load(self):
+        """
+        读取数据库
+        :return: 
+        """
+        self.clear_all()
+        file_name = r"C:\Users\sanve\Documents\Learn\db_process\拧紧.accdb"
+        while True:
+            table_name = "Screwing"
+            spindle_id = 1
+            import pypyodbc
+            try:
+                self.data = ScrewingDataProcess(
+                    file_name, table_name, spindle_id, text_out=self.ui.statusBar.showMessage)
+                break
+            except  pypyodbc.Error as err:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
+                msg_box.exec_()
+                self.text_out("请等待重新输入")
+        self.text_out("完成")
+
+        self.file_name = file_name
+        self.table_name = table_name
+        self.spindle_id = spindle_id
+
+        # 设置程序控件值的范围与当前默认值
+        self.ui.start_time.setMinimumDate(
+            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
+        self.ui.start_time.setMaximumDate(
+            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
+        self.ui.start_time.setDate(
+            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
+        self.ui.end_time.setMinimumDate(
+            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
+        self.ui.end_time.setMaximumDate(
+            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
+        self.ui.end_time.setDate(
+            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
+        self.ui.start_num.setMinimum(0)
+        self.ui.start_num.setMaximum(len(self.data.part_date) - 1)
+        self.ui.start_num.setValue(0)
+        self.ui.end_num.setMinimum(0)
+        self.ui.end_num.setMaximum(len(self.data.part_date) - 1)
+        self.ui.end_num.setValue(len(self.data.part_date) - 1)
+
+        # 激活控件
+        self.ui.actionChange_Spindle_ID.setEnabled(True)
+        self.ui.centralWidget.setEnabled(True)
+        self.ui.centralWidget.setEnabled(True)
+        self.ui.menuBar.setEnabled(True)
+        self.ui.actionspc_xr.setEnabled(True)
+
+        # 以时间为横轴作图
+        self.plot_by_time()
     app = QtWidgets.QApplication(sys.argv)
     win = MainWindow()
+    load(win)
     sys.exit(app.exec_())
