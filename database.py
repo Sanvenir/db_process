@@ -62,14 +62,26 @@ class ScrewingDataBase(DataBase):
         WHERE SpindleID={}""".format(self.table, spindle_id))
         return Series(dict(self.cur.fetchall()))
 
+    def fetch_date_all(self, spindle_id, start_date, end_date):
+        self.cur.execute("""
+        SELECT Date, QSCode
+        From {}
+        WHERE SpindleID={} AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
+                         format(self.table, spindle_id, start_date, end_date))
+        return Series(dict(self.cur.fetchall()))
+
+    def fetch_date_normal(self, spindle_id, start_date, end_date):
+        self.cur.execute("""
+        SELECT Date, TorqueAct
+        From {}
+        WHERE SpindleID={} AND OK=-1 AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
+                         format(self.table, spindle_id, start_date, end_date))
+        return Series(dict(self.cur.fetchall()))
+
 
 if __name__ == "__main__":
-    path = input("将数据库文件拖曳至此：").strip('"')
-    table = input("数据表名称：")
-    while True:
-        spindle_id = input("拧紧枪id(1-22)：")
-        data = ScrewingDataBase(path, table)
-        total_data = data.fetch_all_record(spindle_id)
-        for i, ele in enumerate(total_data):
-            if ele == 16 and 0 < i < len(total_data) - 1:
-                print("{} 下一工件生产时间距离：{}".format(total_data.index[i], total_data.index[i + 1] - total_data.index[i]))
+    path = r"C:\Users\sanve\Documents\Learn\db_process\拧紧.accdb"
+    table = "Screwing"
+    data = ScrewingDataBase(path, table)
+    print(data.fetch_date_all(1, '2013-10-09', '2013-10-30'))
+    print(data.fetch_date_normal(1, '2013-10-09', '2013-10-30'))
