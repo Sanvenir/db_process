@@ -70,12 +70,12 @@ class ScrewingDataBase(DataBase):
                          format(self.table, spindle_id, start_date, end_date))
         return Series(dict(self.cur.fetchall()))
 
-    def fetch_date_normal(self, spindle_id, start_date, end_date):
+    def fetch_date_normal(self, record, spindle_id, start_date, end_date):
         self.cur.execute("""
-        SELECT Date, TorqueAct
+        SELECT Date, {}
         From {}
         WHERE SpindleID={} AND OK=-1 AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
-                         format(self.table, spindle_id, start_date, end_date))
+                         format(record, self.table, spindle_id, start_date, end_date))
         return Series(dict(self.cur.fetchall()))
 
 
@@ -83,5 +83,3 @@ if __name__ == "__main__":
     path = r"C:\Users\sanve\Documents\Learn\db_process\拧紧.accdb"
     table = "Screwing"
     data = ScrewingDataBase(path, table)
-    print(data.fetch_date_all(1, '2013-10-09', '2013-10-30'))
-    print(data.fetch_date_normal(1, '2013-10-09', '2013-10-30'))

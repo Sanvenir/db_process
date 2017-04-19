@@ -14,10 +14,13 @@ from matplotlib.figure import Figure
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import QDate
+from PyQt5.QtCore import QDate, Qt
 
 from ui_mainwindow import Ui_MainWindow
+from ui_datewindow import Ui_Dialog
+
 from process import ScrewingDataProcess
+from config import REVERSE_MONTH
 
 
 def log_load(cls):
@@ -189,12 +192,15 @@ class MainWindow(QMainWindow):
             spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("查询枪号"), 1, 1, 22)
             if not ok:
                 return
+            date_period = [None, None]
+            DateWindow(self, date_period).exec()
+            print(date_period)
             import pypyodbc
             try:
                 self.data = ScrewingDataProcess(
-                    file_name, table_name, spindle_id, text_out=self.ui.statusBar.showMessage)
+                    file_name, table_name, spindle_id, date_period, text_out=self.ui.statusBar.showMessage)
                 break
-            except  pypyodbc.Error as err:
+            except pypyodbc.Error as err:
                 msg_box = QtWidgets.QMessageBox()
                 msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
                 msg_box.exec_()
@@ -441,6 +447,22 @@ class MainWindow(QMainWindow):
         self.figure_canvas_production.draw()
         self.ui.actionClear_ALL.setEnabled(True)
 
+
+class DateWindow(QtWidgets.QDialog):
+    def __init__(self, parent, date_period):
+        super().__init__(parent)
+        self.ui = Ui_Dialog()
+        self.ui.setupUi(self)
+        self.ui.end_date.setDate(QDate.currentDate())
+        self.ui.start_date.setDate(QDate.currentDate().addMonths(-REVERSE_MONTH))
+        self.date_period = date_period
+
+    def accept(self):
+        self.date_period[0], self.date_period[1] = self.ui.start_date.date().toString(Qt.ISODate),\
+                                                   self.ui.end_date.date().toString(Qt.ISODate)
+        super().accept()
+
+
 if __name__ == "__main__":
     def load(self):
         """
@@ -448,7 +470,7 @@ if __name__ == "__main__":
         :return: 
         """
         self.clear_all()
-        file_name = r"C:\Users\sanve\Documents\Learn\db_process\拧紧.accdb"
+        file_name = input("Enter the file name:")
         while True:
             table_name = "Screwing"
             spindle_id = 1
@@ -497,6 +519,7 @@ if __name__ == "__main__":
 
         # 以时间为横轴作图
         self.plot_by_time()
+
     app = QtWidgets.QApplication(sys.argv)
     win = MainWindow()
     load(win)
