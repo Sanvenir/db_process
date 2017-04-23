@@ -35,6 +35,7 @@ def log_load(cls):
         self.ui.centralWidget.setEnabled(False)
         self.ui.menuBar.setEnabled(False)
         result = load(self)
+        self.comp_data = None
         self.ui.menuBar.setEnabled(True)
         if self.data is None:
             return result
@@ -79,6 +80,7 @@ class MainWindow(QMainWindow):
         # 消息connect
         self.ui.actionOpen.triggered.connect(self.load)
         self.ui.actionChange_Spindle_ID.triggered.connect(self.change_spindle_id)
+        self.ui.actionAddSpindle.triggered.connect(self.add_comp_spindle)
         self.ui.actionClear_ALL.triggered.connect(self.clear_all)
         self.ui.actionClearTorque.triggered.connect(self.clear_torque)
         self.ui.button_time.clicked.connect(self.plot_by_time)
@@ -137,10 +139,17 @@ class MainWindow(QMainWindow):
             plt.subplot(211)
             plt.plot(self.data.part_date[self.current_start_num:self.current_end_num],
                      self.data.part_mean[self.current_start_num:self.current_end_num],
-                     label="ID {} std".format(self.spindle_id))
+                     label="ID {} mean".format(self.spindle_id))
             plt.plot(self.data.part_date[self.current_start_num:self.current_end_num],
                      self.data.part_std[self.current_start_num:self.current_end_num],
                      label="ID {} std".format(self.spindle_id))
+            if self.comp_data is not None:
+                plt.plot(self.comp_data.part_date[self.current_start_num:self.current_end_num],
+                         self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+                         label="ID {} mean".format(self.comp_spindle_id))
+                plt.plot(self.comp_data.part_date[self.current_start_num:self.current_end_num],
+                         self.comp_data.part_std[self.current_start_num:self.current_end_num],
+                         label="ID {} std".format(self.comp_spindle_id))
             plt.legend()
             plt.subplot(212)
             plt.plot(self.data.daily_production[self.current_start_time:self.current_end_time],
@@ -166,10 +175,17 @@ class MainWindow(QMainWindow):
             plt.subplot(211)
             plt.plot(range(self.current_start_num, self.current_end_num),
                      self.data.part_mean[self.current_start_num:self.current_end_num],
-                     label="ID {} std".format(self.spindle_id))
+                     label="ID {} mean".format(self.spindle_id))
             plt.plot(range(self.current_start_num, self.current_end_num),
                      self.data.part_std[self.current_start_num:self.current_end_num],
                      label="ID {} std".format(self.spindle_id))
+            if self.comp_data is not None:
+                plt.plot(range(self.current_start_num, self.current_end_num),
+                         self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+                         label="ID {} mean".format(self.comp_spindle_id))
+                plt.plot(range(self.current_start_num, self.current_end_num),
+                         self.comp_data.part_std[self.current_start_num:self.current_end_num],
+                         label="ID {} std".format(self.comp_spindle_id))
             plt.legend()
             plt.subplot(212)
             plt.plot(self.data.part_date[self.current_start_num:self.current_end_num])
@@ -245,6 +261,7 @@ class MainWindow(QMainWindow):
 
         # 激活控件
         self.ui.actionChange_Spindle_ID.setEnabled(True)
+        self.ui.actionAddSpindle.setEnabled(True)
         self.ui.centralWidget.setEnabled(True)
         self.ui.centralWidget.setEnabled(True)
         self.ui.menuBar.setEnabled(True)
@@ -267,6 +284,7 @@ class MainWindow(QMainWindow):
         self.data = ScrewingDataProcess(
             self.file_name, self.table_name, self.spindle_id, self.time_period,
             text_out=self.ui.statusBar.showMessage)
+        self.comp_data = None
         self.text_out("完成")
         self.plot_by_time()
 
@@ -428,14 +446,26 @@ class MainWindow(QMainWindow):
         self.ax_torque_mean.plot(self.data.part_date[self.current_start_num:self.current_end_num],
                                  self.data.part_mean[self.current_start_num:self.current_end_num],
                                  label="ID {} Mean".format(self.spindle_id))
+        if self.comp_data is not None:
+            self.ax_torque_mean.plot(self.comp_data.part_date[self.current_start_num:self.current_end_num],
+                                     self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+                                     label="ID {} Mean".format(self.comp_spindle_id))
         self.ax_torque_mean.legend()
         self.ax_torque_std.plot(self.data.part_date[self.current_start_num:self.current_end_num],
                                 self.data.part_std[self.current_start_num:self.current_end_num],
                                 label="ID {} std".format(self.spindle_id))
+        if self.comp_data is not None:
+            self.ax_torque_std.plot(self.comp_data.part_date[self.current_start_num:self.current_end_num],
+                                    self.comp_data.part_std[self.current_start_num:self.current_end_num],
+                                    label="ID {} Mean".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
         self.ax_torque_hist.hist(self.data.part_mean[self.current_start_num:self.current_end_num],
                                  np.arange(12., 25., 0.2), histtype="stepfilled",
                                  label="ID {} Hist".format(self.spindle_id))
+        if self.comp_data is not None:
+            self.ax_torque_hist.hist(self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+                                     np.arange(12., 25., 0.2), histtype="stepfilled",
+                                     label="ID {} Hist".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
         self.figure_canvas_torque.draw()
         self.ui.actionClear_ALL.setEnabled(True)
@@ -449,14 +479,26 @@ class MainWindow(QMainWindow):
         self.ax_torque_mean.plot(range(self.current_start_num, self.current_end_num),
                                  self.data.part_mean[self.current_start_num:self.current_end_num],
                                  label="ID {} Mean".format(self.spindle_id))
+        if self.comp_data is not None:
+            self.ax_torque_mean.plot(range(self.current_start_num, self.current_end_num),
+                                     self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+                                     label="ID {} Mean".format(self.comp_spindle_id))
         self.ax_torque_mean.legend()
         self.ax_torque_std.plot(range(self.current_start_num, self.current_end_num),
                                 self.data.part_std[self.current_start_num:self.current_end_num],
                                 label="ID {} std".format(self.spindle_id))
+        if self.comp_data is not None:
+            self.ax_torque_std.plot(range(self.current_start_num, self.current_end_num),
+                                    self.comp_data.part_std[self.current_start_num:self.current_end_num],
+                                    label="ID {} std".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
         self.ax_torque_hist.hist(self.data.part_mean[self.current_start_num:self.current_end_num],
                                  np.arange(12., 25., 0.2), histtype="stepfilled",
                                  label="ID {} Hist".format(self.spindle_id))
+        if self.comp_data is not None:
+            self.ax_torque_hist.hist(self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+                                     np.arange(12., 25., 0.2), histtype="stepfilled",
+                                     label="ID {} Hist".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
         self.figure_canvas_torque.draw()
         self.ui.actionClear_ALL.setEnabled(True)
