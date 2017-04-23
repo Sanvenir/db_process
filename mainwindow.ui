@@ -564,7 +564,7 @@
      <x>0</x>
      <y>0</y>
      <width>1050</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -576,13 +576,14 @@
    </widget>
    <widget class="QMenu" name="menuSpindle">
     <property name="title">
-     <string>拧紧枪设置</string>
+     <string>拧紧枪</string>
     </property>
     <addaction name="actionChange_Spindle_ID"/>
+    <addaction name="actionAddSpindle"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
-     <string>绘图</string>
+     <string>图像</string>
     </property>
     <widget class="QMenu" name="menuspc_figure">
      <property name="enabled">
@@ -643,6 +644,14 @@
    </property>
    <property name="text">
     <string>SPC XR</string>
+   </property>
+  </action>
+  <action name="actionAddSpindle">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>设置对比拧紧枪</string>
    </property>
   </action>
  </widget>

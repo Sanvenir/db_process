@@ -53,11 +53,14 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # 定义内部变量
-        self.data = None
-        self.file_name = None
-        self.table_name = None
-        self.spindle_id = None
+        self.data = None  # 分析数据
+        self.comp_data = None  # 对比数据
+        self.file_name = None  # 文件名
+        self.table_name = None  # 表名
+        self.spindle_id = None  # 当前拧紧枪id
+        self.comp_spindle_id = None  # 对比用拧紧枪id
         self.spcwindow = None
+        self.time_period = [None, None]  # 分析时间段，[开始时间，结束时间]
         # 当前数据的起始组数
         self.current_start_num = None
         # 当前数据的结束组数
@@ -185,26 +188,35 @@ class MainWindow(QMainWindow):
             self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
         if not ok:
             return
+        table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+        if not (ok and table_name):
+            return
+        spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("查询枪号"), 1, 1, 22)
+        if not ok:
+            return
+        self.time_period = [None, None]
+        DateWindow(self, self.time_period).exec()
         while True:
-            table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-            if not (ok and table_name):
-                return
-            spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("查询枪号"), 1, 1, 22)
-            if not ok:
-                return
-            date_period = [None, None]
-            DateWindow(self, date_period).exec()
-            print(date_period)
             import pypyodbc
             try:
                 self.data = ScrewingDataProcess(
-                    file_name, table_name, spindle_id, date_period, text_out=self.ui.statusBar.showMessage)
+                    file_name, table_name, spindle_id, self.time_period, text_out=self.ui.statusBar.showMessage)
                 break
-            except Exception as err:
+            except pypyodbc.Error as err:
                 msg_box = QtWidgets.QMessageBox()
-                msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
+                msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
                 msg_box.exec_()
                 self.text_out("请等待重新输入")
+                table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+                if not (ok and table_name):
+                    return
+            except IndexError as err:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setText(self.tr("错误:{}\n本段时间内数据量可能为空，请重新输入".format(err)))
+                msg_box.exec_()
+                self.text_out("请等待重新输入")
+                self.time_period = [None, None]
+                DateWindow(self, self.time_period).exec()
         self.text_out("完成")
 
         self.file_name = file_name
@@ -251,11 +263,32 @@ class MainWindow(QMainWindow):
         if spindle_id == self.spindle_id:
             self.text_out("与当前存储数据ID相同")
             return
-        self.data = ScrewingDataProcess(
-            self.file_name, self.table_name, spindle_id, text_out=self.ui.statusBar.showMessage)
         self.spindle_id = spindle_id
+        self.data = ScrewingDataProcess(
+            self.file_name, self.table_name, self.spindle_id, self.time_period,
+            text_out=self.ui.statusBar.showMessage)
         self.text_out("完成")
         self.plot_by_time()
+
+    def add_comp_spindle(self):
+        """
+        添加对比拧紧枪
+        :return: 
+        """
+        spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("对比枪号"), 1, 1, 22)
+        if spindle_id == self.spindle_id:
+            self.text_out("与当前分析拧紧枪ID相同")
+            return
+        if spindle_id == self.comp_spindle_id:
+            self.text_out("与当前对比拧紧枪ID相同")
+            return
+        self.comp_spindle_id = spindle_id
+        self.comp_data = ScrewingDataProcess(
+            self.file_name, self.table_name, self.comp_spindle_id, self.time_period,
+            text_out=self.ui.statusBar.showMessage)
+        self.text_out("完成")
+        self.plot_by_time()
+
 
     def update_number(self):
         """
