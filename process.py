@@ -1,10 +1,11 @@
 #!/usr/bin/python  
 # -*- coding: utf-8 -*-  
 from pandas import Series
-from numpy import NaN
+from numpy import timedelta64 as td
 
-from config import SERIES_NUM, DIVIDE_TIME
 from database import ScrewingDataBase
+
+from config import Configuration as cf
 
 
 class ScrewingDataProcess(object):
@@ -16,6 +17,7 @@ class ScrewingDataProcess(object):
         :param spindle_id: 查询的拧紧枪号
         :param text_out: 输出状态的函数，默认为print，期望是窗口statusBar的setText函数
         """
+        print(cf.series_num)
         self.text_out = text_out
         db = ScrewingDataBase(db_file, db_table)
         if data_period is None or data_period[0] is None:
@@ -71,18 +73,18 @@ class ScrewingDataProcess(object):
 
         # 将全部数据中分组为连续生产(生产间隔不大于DIVIDE_TIME)的若干大组
         for date in self.total_normal_data.index:
-            if date - tmp1 > DIVIDE_TIME:
+            if date - tmp1 > td(cf.divide_time, 'm'):
                 time_parts.append(self.total_normal_data[tmp2:date])
                 tmp2 = date
             tmp1 = date
 
         # 将每一大组中每SERIES_NUM的数据分为小组，将所有大组的每一小组添加到返回列表之中
         for data_series in time_parts:
-            start_num, end_num = 0, SERIES_NUM
+            start_num, end_num = 0, cf.series_num
             while end_num < len(data_series):
                 part_series.append(Series(data_series[start_num:end_num]))
                 start_num = end_num
-                end_num += SERIES_NUM
+                end_num += cf.series_num
 
         return part_series
 

@@ -20,7 +20,7 @@ from ui_mainwindow import Ui_MainWindow
 from ui_datewindow import Ui_Dialog
 
 from process import ScrewingDataProcess
-from config import REVERSE_MONTH
+from config import Configuration as cf
 
 
 def log_load(cls):
@@ -40,6 +40,7 @@ def log_load(cls):
         if self.data is None:
             return result
         self.ui.centralWidget.setEnabled(True)
+        self.ui.menuSetting.setEnabled(False)
         return result
     cls.load = new_load
     return cls
@@ -88,6 +89,9 @@ class MainWindow(QMainWindow):
         self.ui.button_detial_time.clicked.connect(self.plot_detail_time)
         self.ui.button_detial_num.clicked.connect(self.plot_detail_num)
         self.ui.actionspc_xr.triggered.connect(self.spc_show)
+        self.ui.actionPartNum.triggered.connect(self.set_series_num)
+        self.ui.actionReverseTime.triggered.connect(self.set_reverse_month)
+        self.ui.actionDefaultReadTime.triggered.connect(self.set_divide_time)
 
         # 生产量信息图表，包括生产量子图和生产合格率子图
         self.figure_production = Figure()
@@ -239,36 +243,45 @@ class MainWindow(QMainWindow):
         self.table_name = table_name
         self.spindle_id = spindle_id
 
-        # 设置程序控件值的范围与当前默认值
-        self.ui.start_time.setMinimumDate(
-            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
-        self.ui.start_time.setMaximumDate(
-            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
-        self.ui.start_time.setDate(
-            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
-        self.ui.end_time.setMinimumDate(
-            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
-        self.ui.end_time.setMaximumDate(
-            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
-        self.ui.end_time.setDate(
-            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
-        self.ui.start_num.setMinimum(0)
-        self.ui.start_num.setMaximum(len(self.data.part_date) - 1)
-        self.ui.start_num.setValue(0)
-        self.ui.end_num.setMinimum(0)
-        self.ui.end_num.setMaximum(len(self.data.part_date) - 1)
-        self.ui.end_num.setValue(len(self.data.part_date) - 1)
+        try:
 
-        # 激活控件
-        self.ui.actionChange_Spindle_ID.setEnabled(True)
-        self.ui.actionAddSpindle.setEnabled(True)
-        self.ui.centralWidget.setEnabled(True)
-        self.ui.centralWidget.setEnabled(True)
-        self.ui.menuBar.setEnabled(True)
-        self.ui.actionspc_xr.setEnabled(True)
+            # 设置程序控件值的范围与当前默认值
+            self.ui.start_time.setMinimumDate(
+                QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
+            self.ui.start_time.setMaximumDate(
+                QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
+            self.ui.start_time.setDate(
+                QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
+            self.ui.end_time.setMinimumDate(
+                QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
+            self.ui.end_time.setMaximumDate(
+                QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
+            self.ui.end_time.setDate(
+                QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
+            self.ui.start_num.setMinimum(0)
+            self.ui.start_num.setMaximum(len(self.data.part_date) - 1)
+            self.ui.start_num.setValue(0)
+            self.ui.end_num.setMinimum(0)
+            self.ui.end_num.setMaximum(len(self.data.part_date) - 1)
+            self.ui.end_num.setValue(len(self.data.part_date) - 1)
 
-        # 以时间为横轴作图
-        self.plot_by_time()
+            # 激活控件
+            self.ui.actionChange_Spindle_ID.setEnabled(True)
+            self.ui.actionAddSpindle.setEnabled(True)
+            self.ui.centralWidget.setEnabled(True)
+            self.ui.centralWidget.setEnabled(True)
+            self.ui.menuBar.setEnabled(True)
+            self.ui.actionspc_xr.setEnabled(True)
+
+            # 以时间为横轴作图
+            self.plot_by_time()
+        except IndexError as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}\n可能为分组量过大，无法生成有效分组".format(err)))
+            msg_box.exec_()
+            self.text_out("请重新设定分组数，并重新打开数据库")
+            self.time_period = [None, None]
+            self.data = None
 
     def change_spindle_id(self):
         """
@@ -521,6 +534,28 @@ class MainWindow(QMainWindow):
         self.figure_canvas_production.draw()
         self.ui.actionClear_ALL.setEnabled(True)
 
+    def set_divide_time(self):
+        divide, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"),
+                                                   self.tr("每组数据中最大间隔时间（分钟）"),
+                                                   cf.divide_time, 1, 1440)
+        if ok:
+            cf.divide_time = divide
+
+    def set_series_num(self):
+        series_num, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"),
+                                                       self.tr("每组数据量（设置太大可能会导致无分组）"),
+                                                       cf.series_num, 10, 100)
+        if ok:
+            cf.series_num = series_num
+
+    def set_reverse_month(self):
+        reverse, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"),
+                                                       self.tr("默认回溯月数（在确认数据库读取时间段时，"
+                                                               "默认的开始日期为当前日期之前的前几个月"),
+                                                       cf.reverse_month, 1, 12)
+        if ok:
+            cf.reverse_month = reverse
+
 
 class DateWindow(QtWidgets.QDialog):
     def __init__(self, parent, date_period):
@@ -528,7 +563,7 @@ class DateWindow(QtWidgets.QDialog):
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
         self.ui.end_date.setDate(QDate.currentDate())
-        self.ui.start_date.setDate(QDate.currentDate().addMonths(-REVERSE_MONTH))
+        self.ui.start_date.setDate(QDate.currentDate().addMonths(-cf.reverse_month))
         self.date_period = date_period
 
     def accept(self):

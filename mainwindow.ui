@@ -58,7 +58,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,1,2,0,1,1,1,1">
+         <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <spacer name="verticalSpacer_7">
             <property name="orientation">
@@ -86,17 +86,32 @@
            </widget>
           </item>
           <item>
-           <spacer name="verticalSpacer_3">
+           <widget class="Line" name="line_9">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>数据开始时间</string>
             </property>
-           </spacer>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>数据结束时间</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_7">
+            <property name="text">
+             <string>数据总数</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="Line" name="line_5">
@@ -122,14 +137,35 @@
           <item>
            <widget class="QLabel" name="label_total_mean">
             <property name="text">
-             <string>总均值</string>
+             <string>扭矩均值</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="label_total_std">
             <property name="text">
-             <string>总标准差</string>
+             <string>扭矩标准差</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>对比拧紧枪编号</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>相关度</string>
             </property>
            </widget>
           </item>
@@ -149,7 +185,7 @@
          </widget>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_5" stretch="0,1,2,0,1,1,1,1">
+         <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <spacer name="verticalSpacer_8">
             <property name="orientation">
@@ -166,22 +202,37 @@
           <item>
            <widget class="QLabel" name="spindle">
             <property name="text">
-             <string>NaT</string>
+             <string>NaN</string>
             </property>
            </widget>
           </item>
           <item>
-           <spacer name="verticalSpacer_4">
+           <widget class="Line" name="line_10">
             <property name="orientation">
-             <enum>Qt::Vertical</enum>
+             <enum>Qt::Horizontal</enum>
             </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>40</height>
-             </size>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_total_start">
+            <property name="text">
+             <string>NaN</string>
             </property>
-           </spacer>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_total_end">
+            <property name="text">
+             <string>NaN </string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_total_num">
+            <property name="text">
+             <string>NaN</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="Line" name="line_6">
@@ -193,28 +244,49 @@
           <item>
            <widget class="QLabel" name="total_production">
             <property name="text">
-             <string>NaT</string>
+             <string>NaN</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="total_qualification">
             <property name="text">
-             <string>NaT</string>
+             <string>NaN</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="total_mean">
             <property name="text">
-             <string>NaT</string>
+             <string>NaN</string>
             </property>
            </widget>
           </item>
           <item>
            <widget class="QLabel" name="total_std">
             <property name="text">
-             <string>NaT</string>
+             <string>NaN</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="Line" name="line_8">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_comp_spindle_id">
+            <property name="text">
+             <string>NaN</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_correlation">
+            <property name="text">
+             <string>NaN</string>
             </property>
            </widget>
           </item>
@@ -599,9 +671,18 @@
     <addaction name="separator"/>
     <addaction name="menuspc_figure"/>
    </widget>
+   <widget class="QMenu" name="menuSetting">
+    <property name="title">
+     <string>设置</string>
+    </property>
+    <addaction name="actionPartNum"/>
+    <addaction name="actionDefaultReadTime"/>
+    <addaction name="actionReverseTime"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSpindle"/>
    <addaction name="menuPlot"/>
+   <addaction name="menuSetting"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionOpen">
@@ -652,6 +733,21 @@
    </property>
    <property name="text">
     <string>设置对比拧紧枪</string>
+   </property>
+  </action>
+  <action name="actionPartNum">
+   <property name="text">
+    <string>分组数目</string>
+   </property>
+  </action>
+  <action name="actionDefaultReadTime">
+   <property name="text">
+    <string>中断时间</string>
+   </property>
+  </action>
+  <action name="actionReverseTime">
+   <property name="text">
+    <string>默认回溯月数</string>
    </property>
   </action>
  </widget>
