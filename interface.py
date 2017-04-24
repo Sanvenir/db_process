@@ -41,6 +41,7 @@ def log_load(cls):
             return result
         self.ui.centralWidget.setEnabled(True)
         self.ui.menuSetting.setEnabled(False)
+        self.comp_data = None
         return result
     cls.load = new_load
     return cls
@@ -158,9 +159,10 @@ class MainWindow(QMainWindow):
             plt.subplot(212)
             plt.plot(self.data.daily_production[self.current_start_time:self.current_end_time],
                      label="Daily Production".format(self.spindle_id))
-            plt.plot(100 * self.data.daily_qualified_production[self.current_start_time:self.current_end_time] /
-                     (self.data.daily_production[self.current_start_time:self.current_end_time]),
-                     label="Qualification Ratio".format(self.spindle_id))
+            plt.fill_between(
+                self.data.daily_production[self.current_start_time:self.current_end_time].index,
+                self.data.daily_qualified_production[self.current_start_time:self.current_end_time],
+                label="Qualification Production")
             plt.legend()
             plt.show()
         except Exception as err:
@@ -326,6 +328,8 @@ class MainWindow(QMainWindow):
         更新显示数字的控件内容
         :return: 
         """
+        if self.data is None:
+            return
         self.ui.spindle.setText(format(self.spindle_id, '<'))
         self.ui.total_qualification.setText(
             "{:<.2f}%".format(len(self.data.total_normal_data[self.current_start_time:self.current_end_time]) /
@@ -344,6 +348,17 @@ class MainWindow(QMainWindow):
         self.ui.end_time.setDate(QDate.fromString(str(self.current_end_time.date()), "yyyy-MM-dd"))
         self.ui.start_num.setValue(self.current_start_num)
         self.ui.end_num.setValue(self.current_end_num)
+
+        self.ui.label_total_start.setText(str(self.data.part_date[0]))
+        self.ui.label_total_end.setText(str(self.data.part_date[-1]))
+        self.ui.label_total_num.setNum(len(self.data.part_date))
+
+        if self.comp_data is not None:
+            self.ui.label_comp_spindle_id.setNum(self.comp_spindle_id)
+            self.ui.label_correlation.setNum(self.data.total_normal_data.corr(self.comp_data.total_normal_data))
+        else:
+            self.ui.label_comp_spindle_id.setText("NaN")
+            self.ui.label_correlation.setText("NaN")
 
     def update_var_by_time(self):
         """
