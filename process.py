@@ -38,6 +38,9 @@ class ScrewingDataProcess(object):
             # 正常数据，内容为扭矩值，index为日期
             self.total_normal_data = db.fetch_date_normal('TorqueAct', spindle_id, data_period[0], data_period[1])
 
+        if self.total_normal_data.empty:
+            raise AttributeError("该表或该数据段内没有正常数据")
+
         # 将全部正常数据以SERIES_NUM为一组划分为多组，同时保证每一组内的点都是连续生产的
         self.part_series = self._dividing_total_data()
 
