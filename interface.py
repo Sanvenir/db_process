@@ -35,13 +35,11 @@ def log_load(cls):
         self.ui.centralWidget.setEnabled(False)
         self.ui.menuBar.setEnabled(False)
         result = load(self)
-        self.comp_data = None
         self.ui.menuBar.setEnabled(True)
         if self.data is None:
             return result
         self.ui.centralWidget.setEnabled(True)
         self.ui.menuSetting.setEnabled(False)
-        self.comp_data = None
         return result
     cls.load = new_load
     return cls
@@ -274,6 +272,7 @@ class MainWindow(QMainWindow):
             self.ui.centralWidget.setEnabled(True)
             self.ui.menuBar.setEnabled(True)
             self.ui.actionspc_xr.setEnabled(True)
+            self.comp_data = None
 
             # 以时间为横轴作图
             self.plot_by_time()

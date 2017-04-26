@@ -14,12 +14,25 @@ from pandas import Series
 from ui_spcwindow import Ui_SPCWindow
 
 
+class MyFigureCanvas(FigureCanvas):
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.mouse_double_click_func = None
+
+    def set_mouse_double_click(self, func):
+        self.mouse_double_click_func = func
+
+    def mouseDoubleClickEvent(self, event):
+        super().mouseDoubleClickEvent(event)
+        self.mouse_double_click_func()
+
 class SPCWindow(QtWidgets.QMainWindow):
     def __init__(self, total_normal_data):
         super().__init__()
         self.spc_series = self.load_data(total_normal_data)
         self.spc_mean_series = Series([series.mean() for series in self.spc_series])
         self.spc_range_series = Series([series.max() - series.min() for series in self.spc_series])
+        self.spc_date = [(series.first_valid_index(), series.last_valid_index()) for series in self.spc_series]
 
         self.ui = Ui_SPCWindow()
         self.ui.setupUi(self)
@@ -27,11 +40,13 @@ class SPCWindow(QtWidgets.QMainWindow):
         # 添加图表
         self.figure_spc = Figure()
         self.ax_spc = self.figure_spc.add_subplot(111)
-        self.figure_canvas = FigureCanvas(self.figure_spc)
+        self.figure_canvas = MyFigureCanvas(self.figure_spc)
 
         # 连接控件
         self.ui.button_spc.clicked.connect(self.refresh_button)
         self.ui.slider_spc.valueChanged.connect(self.plot_spc)
+
+        self.figure_canvas.set_mouse_double_click(self.show_detail)
 
         self.ui.figure_layout.addWidget(self.figure_canvas)
 
@@ -68,6 +83,15 @@ class SPCWindow(QtWidgets.QMainWindow):
         self.ax_spc.hlines(self.spc_mean_series[start:end].mean() + ran, start, end)
         self.ax_spc.hlines(self.spc_mean_series[start:end].mean() - ran, start, end)
         self.figure_canvas.draw()
+        self.ui.statusbar.showMessage("当前分析点时间范围：{} - {}".format(self.spc_date[start][0],
+                                                                 self.spc_date[end][1]))
+
+    def show_detail(self):
+        start = self.ui.spin_spc.value()
+        end = self.ui.spin_spc.value() + self.ui.spin_range.value()
+        for i in range(start, end):
+            plt.plot(self.spc_series[i])
+        plt.show()
 
     @staticmethod
     def load_data(total_normal_data):
@@ -79,7 +103,7 @@ class SPCWindow(QtWidgets.QMainWindow):
         spc_series = []
         current_part = 0
         while current_part + 16 < len(total_normal_data):
-            spc_series.append(Series(total_normal_data[current_part:current_part + 16]))
+            spc_series.append(total_normal_data[current_part:current_part + 16])
             current_part += 16
         return spc_series
 
