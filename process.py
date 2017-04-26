@@ -17,7 +17,6 @@ class ScrewingDataProcess(object):
         :param spindle_id: 查询的拧紧枪号
         :param text_out: 输出状态的函数，默认为print，期望是窗口statusBar的setText函数
         """
-        print(cf.series_num)
         self.text_out = text_out
         db = ScrewingDataBase(db_file, db_table)
         if data_period is None or data_period[0] is None:
