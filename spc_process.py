@@ -4,7 +4,6 @@
 import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 from PyQt5 import QtWidgets
@@ -12,19 +11,7 @@ from PyQt5 import QtWidgets
 from pandas import Series
 
 from ui_spcwindow import Ui_SPCWindow
-
-
-class MyFigureCanvas(FigureCanvas):
-    def __init__(self, *args):
-        super().__init__(*args)
-        self.mouse_double_click_func = None
-
-    def set_mouse_double_click(self, func):
-        self.mouse_double_click_func = func
-
-    def mouseDoubleClickEvent(self, event):
-        super().mouseDoubleClickEvent(event)
-        self.mouse_double_click_func()
+from custom_class import MyFigureCanvas
 
 class SPCWindow(QtWidgets.QMainWindow):
     def __init__(self, total_normal_data):

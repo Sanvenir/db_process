@@ -9,7 +9,6 @@ import numpy as np
 import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
 
 from PyQt5 import QtWidgets
@@ -21,6 +20,7 @@ from ui_datewindow import Ui_Dialog
 
 from process import ScrewingDataProcess
 from config import Configuration as cf
+from custom_class import MyFigureCanvas
 
 
 def log_load(cls):
@@ -91,19 +91,21 @@ class MainWindow(QMainWindow):
         self.ui.actionPartNum.triggered.connect(self.set_series_num)
         self.ui.actionReverseTime.triggered.connect(self.set_reverse_month)
         self.ui.actionDefaultReadTime.triggered.connect(self.set_divide_time)
+        self.ui.actionPlotSpecgram.triggered.connect(self.plot_specgram)
+        self.ui.actionPlotFFT.triggered.connect(self.plot_fft)
 
         # 生产量信息图表，包括生产量子图和生产合格率子图
         self.figure_production = Figure()
         self.ax_production = self.figure_production.add_subplot(211)
         self.ax_qualification = self.figure_production.add_subplot(212)
-        self.figure_canvas_production = FigureCanvas(self.figure_production)
+        self.figure_canvas_production = MyFigureCanvas(self.figure_production)
 
         # 扭矩信息图表，包括扭矩平均值子图，标准差子图，扭矩分布直方图
         self.figure_torque = Figure()
         self.ax_torque_mean = self.figure_torque.add_subplot(311)
         self.ax_torque_std = self.figure_torque.add_subplot(312)
         self.ax_torque_hist = self.figure_torque.add_subplot(313)
-        self.figure_canvas_torque = FigureCanvas(self.figure_torque)
+        self.figure_canvas_torque = MyFigureCanvas(self.figure_torque)
 
         # 添加图表
         layout_production = QtWidgets.QVBoxLayout()
@@ -271,7 +273,8 @@ class MainWindow(QMainWindow):
             self.ui.centralWidget.setEnabled(True)
             self.ui.centralWidget.setEnabled(True)
             self.ui.menuBar.setEnabled(True)
-            self.ui.actionspc_xr.setEnabled(True)
+            self.ui.menuspc_figure.setEnabled(True)
+            self.ui.menuPlotFrequence.setEnabled(True)
             self.comp_data = None
 
             # 以时间为横轴作图
@@ -320,7 +323,6 @@ class MainWindow(QMainWindow):
             text_out=self.ui.statusBar.showMessage)
         self.text_out("完成")
         self.plot_by_time()
-
 
     def update_number(self):
         """
@@ -564,11 +566,25 @@ class MainWindow(QMainWindow):
 
     def set_reverse_month(self):
         reverse, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"),
-                                                       self.tr("默认回溯月数（在确认数据库读取时间段时，"
-                                                               "默认的开始日期为当前日期之前的前几个月"),
-                                                       cf.reverse_month, 1, 12)
+                                                    self.tr("默认回溯月数（在确认数据库读取时间段时，\n"
+                                                            "默认的开始日期为当前日期之前的前几个月"),
+                                                    cf.reverse_month, 1, 12)
         if ok:
             cf.reverse_month = reverse
+
+    def plot_specgram(self):
+        from math import log2
+        nfft = 2 << (1 + int(log2(len(self.data.part_mean))))
+        plt.close()
+        plt.specgram(self.data.part_mean, NFFT=nfft, Fs=cf.series_num, noverlap=10)
+        plt.show()
+
+    def plot_fft(self):
+        fft = np.fft.rfft(self.data.part_mean)
+        plt.close()
+        plt.plot(abs(fft))
+        plt.ylim(0.0, abs(fft[1]))
+        plt.show()
 
 
 class DateWindow(QtWidgets.QDialog):
