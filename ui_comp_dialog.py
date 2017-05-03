@@ -1,0 +1,93 @@
+# -*- coding: utf-8 -*-
+
+# Form implementation generated from reading ui file 'comp_dialog.ui'
+#
+# Created by: PyQt5 UI code generator 5.8.2
+#
+# WARNING! All changes made in this file will be lost!
+
+from PyQt5 import QtCore, QtGui, QtWidgets
+
+class Ui_Dialog(object):
+    def setupUi(self, Dialog):
+        Dialog.setObjectName("Dialog")
+        Dialog.resize(640, 480)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.verticalLayout = QtWidgets.QVBoxLayout()
+        self.verticalLayout.setObjectName("verticalLayout")
+        self.radioButtonByTime = QtWidgets.QRadioButton(Dialog)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.radioButtonByTime.sizePolicy().hasHeightForWidth())
+        self.radioButtonByTime.setSizePolicy(sizePolicy)
+        self.radioButtonByTime.setChecked(True)
+        self.radioButtonByTime.setObjectName("radioButtonByTime")
+        self.buttonGroup = QtWidgets.QButtonGroup(Dialog)
+        self.buttonGroup.setObjectName("buttonGroup")
+        self.buttonGroup.addButton(self.radioButtonByTime)
+        self.verticalLayout.addWidget(self.radioButtonByTime)
+        self.radioButtonByCount = QtWidgets.QRadioButton(Dialog)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.radioButtonByCount.sizePolicy().hasHeightForWidth())
+        self.radioButtonByCount.setSizePolicy(sizePolicy)
+        self.radioButtonByCount.setObjectName("radioButtonByCount")
+        self.buttonGroup.addButton(self.radioButtonByCount)
+        self.verticalLayout.addWidget(self.radioButtonByCount)
+        self.line = QtWidgets.QFrame(Dialog)
+        self.line.setFrameShape(QtWidgets.QFrame.HLine)
+        self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
+        self.line.setObjectName("line")
+        self.verticalLayout.addWidget(self.line)
+        self.groupBox_6 = QtWidgets.QGroupBox(Dialog)
+        self.groupBox_6.setObjectName("groupBox_6")
+        self.verticalLayout.addWidget(self.groupBox_6)
+        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.tabWidget = QtWidgets.QTabWidget(Dialog)
+        self.tabWidget.setObjectName("tabWidget")
+        self.tab_torque_var = QtWidgets.QWidget()
+        self.tab_torque_var.setObjectName("tab_torque_var")
+        self.tabWidget.addTab(self.tab_torque_var, "")
+        self.tab_torque_dis = QtWidgets.QWidget()
+        self.tab_torque_dis.setObjectName("tab_torque_dis")
+        self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.tab_torque_dis)
+        self.horizontalLayout_2.setObjectName("horizontalLayout_2")
+        self.groupBoxSpindleID = QtWidgets.QGroupBox(self.tab_torque_dis)
+        self.groupBoxSpindleID.setObjectName("groupBoxSpindleID")
+        self.horizontalLayout_2.addWidget(self.groupBoxSpindleID)
+        self.groupBoxMean = QtWidgets.QGroupBox(self.tab_torque_dis)
+        self.groupBoxMean.setObjectName("groupBoxMean")
+        self.horizontalLayout_2.addWidget(self.groupBoxMean)
+        self.groupBoxStd = QtWidgets.QGroupBox(self.tab_torque_dis)
+        self.groupBoxStd.setObjectName("groupBoxStd")
+        self.horizontalLayout_2.addWidget(self.groupBoxStd)
+        self.groupBoxKurt = QtWidgets.QGroupBox(self.tab_torque_dis)
+        self.groupBoxKurt.setObjectName("groupBoxKurt")
+        self.horizontalLayout_2.addWidget(self.groupBoxKurt)
+        self.groupBoxSkew = QtWidgets.QGroupBox(self.tab_torque_dis)
+        self.groupBoxSkew.setObjectName("groupBoxSkew")
+        self.horizontalLayout_2.addWidget(self.groupBoxSkew)
+        self.tabWidget.addTab(self.tab_torque_dis, "")
+        self.horizontalLayout.addWidget(self.tabWidget)
+
+        self.retranslateUi(Dialog)
+        self.tabWidget.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(Dialog)
+
+    def retranslateUi(self, Dialog):
+        _translate = QtCore.QCoreApplication.translate
+        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        self.radioButtonByTime.setText(_translate("Dialog", "按时间绘图"))
+        self.radioButtonByCount.setText(_translate("Dialog", "按序号绘图"))
+        self.groupBox_6.setTitle(_translate("Dialog", "GroupBox"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_var), _translate("Dialog", "扭矩变化"))
+        self.groupBoxSpindleID.setTitle(_translate("Dialog", "拧紧枪号"))
+        self.groupBoxMean.setTitle(_translate("Dialog", "均值"))
+        self.groupBoxStd.setTitle(_translate("Dialog", "标准差"))
+        self.groupBoxKurt.setTitle(_translate("Dialog", "峰度"))
+        self.groupBoxSkew.setTitle(_translate("Dialog", "偏度"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_dis), _translate("Dialog", "扭矩分布"))
+

@@ -36,7 +36,7 @@
        </sizepolicy>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="figure_production">
        <attribute name="title">
@@ -310,7 +310,7 @@
          </sizepolicy>
         </property>
         <property name="currentIndex">
-         <number>1</number>
+         <number>0</number>
         </property>
         <widget class="QWidget" name="tabWidgetPage1">
          <attribute name="title">
@@ -644,6 +644,7 @@
      <string>文件</string>
     </property>
     <addaction name="actionOpen"/>
+    <addaction name="actionOpenComp"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSpindle">
@@ -769,6 +770,11 @@
   <action name="actionPlotFFT">
    <property name="text">
     <string>FFT</string>
+   </property>
+  </action>
+  <action name="actionOpenComp">
+   <property name="text">
+    <string>打开数据库（拧紧枪对比）</string>
    </property>
   </action>
  </widget>

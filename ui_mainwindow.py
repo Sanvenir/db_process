@@ -389,7 +389,10 @@ class Ui_MainWindow(object):
         self.actionPlotSpecgram.setObjectName("actionPlotSpecgram")
         self.actionPlotFFT = QtWidgets.QAction(MainWindow)
         self.actionPlotFFT.setObjectName("actionPlotFFT")
+        self.actionOpenComp = QtWidgets.QAction(MainWindow)
+        self.actionOpenComp.setObjectName("actionOpenComp")
         self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addAction(self.actionOpenComp)
         self.menuFile.addAction(self.actionExit)
         self.menuSpindle.addAction(self.actionChange_Spindle_ID)
         self.menuSpindle.addAction(self.actionAddSpindle)
@@ -410,8 +413,8 @@ class Ui_MainWindow(object):
         self.menuBar.addAction(self.menuSetting.menuAction())
 
         self.retranslateUi(MainWindow)
-        self.figure.setCurrentIndex(1)
-        self.tabWidget.setCurrentIndex(1)
+        self.figure.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(0)
         self.actionExit.triggered.connect(MainWindow.close)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         MainWindow.setTabOrder(self.start_num, self.end_time)
@@ -481,4 +484,5 @@ class Ui_MainWindow(object):
         self.actionReverseTime.setText(_translate("MainWindow", "默认回溯月数"))
         self.actionPlotSpecgram.setText(_translate("MainWindow", "Specgram"))
         self.actionPlotFFT.setText(_translate("MainWindow", "FFT"))
+        self.actionOpenComp.setText(_translate("MainWindow", "打开数据库（拧紧枪对比）"))
 
