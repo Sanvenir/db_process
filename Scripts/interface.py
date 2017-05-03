@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-  
 import sys
 
+import matplotlib
+import numpy as np
 import pandas as pd
 
-import numpy as np
-
-import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
@@ -15,8 +14,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QDate, Qt
 
-from ui_mainwindow import Ui_MainWindow
-from ui_datewindow import Ui_Dialog
+from Scripts.ui_mainwindow import Ui_MainWindow
+from Scripts.ui_datewindow import Ui_Dialog
 
 from process import ScrewingDataProcess
 from config import Configuration as cf
@@ -118,7 +117,7 @@ class MainWindow(QMainWindow):
         self.show()
 
     def spc_show(self):
-        from spc_process import SPCWindow
+        from Scripts.spc_process import SPCWindow
         self.spcwindow = SPCWindow(self.data.total_normal_data)
 
     @staticmethod

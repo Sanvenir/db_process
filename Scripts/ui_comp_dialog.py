@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'comp_dialog.ui'
+# Form implementation generated from reading ui file 'ui/comp_dialog.ui'
 #
 # Created by: PyQt5 UI code generator 5.8.2
 #
@@ -82,7 +82,7 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
         self.radioButtonByTime.setText(_translate("Dialog", "按时间绘图"))
         self.radioButtonByCount.setText(_translate("Dialog", "按序号绘图"))
-        self.groupBox_6.setTitle(_translate("Dialog", "GroupBox"))
+        self.groupBox_6.setTitle(_translate("Dialog", "合格率"))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_var), _translate("Dialog", "扭矩变化"))
         self.groupBoxSpindleID.setTitle(_translate("Dialog", "拧紧枪号"))
         self.groupBoxMean.setTitle(_translate("Dialog", "均值"))

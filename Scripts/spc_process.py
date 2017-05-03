@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets
 
 from pandas import Series
 
-from ui_spcwindow import Ui_SPCWindow
+from Scripts.ui_spcwindow import Ui_SPCWindow
 from custom_class import MyFigureCanvas
 
 class SPCWindow(QtWidgets.QMainWindow):

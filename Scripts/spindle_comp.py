@@ -2,13 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout
-from PyQt5.QtCore import Qt, QDate
-from config import Configuration as cf
-from database import DataBase
-from pandas import Series
 
 import matplotlib
+from PyQt5.QtCore import Qt, QDate
+from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout
+from pandas import Series
+
+from config import Configuration as cf
+from database import DataBase
+
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
@@ -116,7 +118,7 @@ class CompDataProcess(object):
 class CompDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        from ui_comp_dialog import Ui_Dialog
+        from Scripts.ui_comp_dialog import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
@@ -175,7 +177,7 @@ class CompDialog(QDialog):
 class SelectDialog(QDialog):
     def __init__(self, state, parent=None):
         super().__init__(parent)
-        from ui_spindle_dialog import Ui_Dialog
+        from Scripts.ui_spindle_dialog import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 

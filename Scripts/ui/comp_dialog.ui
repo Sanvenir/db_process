@@ -61,7 +61,7 @@
      <item>
       <widget class="QGroupBox" name="groupBox_6">
        <property name="title">
-        <string>GroupBox</string>
+        <string>合格率</string>
        </property>
       </widget>
      </item>
