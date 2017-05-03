@@ -8,13 +8,13 @@ from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout
 from pandas import Series
 
-from config import Configuration as cf
-from database import DataBase
+from db_process.config import Configuration as cf
+from db_process.database import DataBase
 
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
-from custom_class import MyFigureCanvas
+from db_process.custom_class import MyFigureCanvas
 
 
 class CompDataBase(DataBase):

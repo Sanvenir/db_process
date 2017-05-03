@@ -10,8 +10,9 @@ from PyQt5 import QtWidgets
 
 from pandas import Series
 
-from Scripts.ui_spcwindow import Ui_SPCWindow
-from custom_class import MyFigureCanvas
+from db_process.ui_spcwindow import Ui_SPCWindow
+from db_process.custom_class import MyFigureCanvas
+
 
 class SPCWindow(QtWidgets.QMainWindow):
     def __init__(self, total_normal_data):

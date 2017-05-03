@@ -14,12 +14,12 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtCore import QDate, Qt
 
-from Scripts.ui_mainwindow import Ui_MainWindow
-from Scripts.ui_datewindow import Ui_Dialog
+from db_process.ui_mainwindow import Ui_MainWindow
+from db_process.ui_datewindow import Ui_Dialog
 
-from process import ScrewingDataProcess
-from config import Configuration as cf
-from custom_class import MyFigureCanvas
+from db_process.process import ScrewingDataProcess
+from db_process.config import Configuration as cf
+from db_process.custom_class import MyFigureCanvas
 
 
 def log_load(cls):
@@ -117,7 +117,7 @@ class MainWindow(QMainWindow):
         self.show()
 
     def spc_show(self):
-        from Scripts.spc_process import SPCWindow
+        from db_process.spc_process import SPCWindow
         self.spcwindow = SPCWindow(self.data.total_normal_data)
 
     @staticmethod

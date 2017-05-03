@@ -3,9 +3,9 @@
 from pandas import Series
 from numpy import timedelta64 as td
 
-from database import ScrewingDataBase
+from db_process.database import ScrewingDataBase
 
-from config import Configuration as cf
+from db_process.config import Configuration as cf
 
 
 class ScrewingDataProcess(object):
