@@ -22,13 +22,14 @@ from db_process.database import DataBase
 
 
 class CompDataBase(DataBase):
-    def __init__(self, path, table):
+    def __init__(self, path, table, text_out=print):
         """
         读取拧紧枪数据库文件
         :param path: 数据库文件绝对路径
         :param table: 数据表名称
         """
         super().__init__(path, table)
+        self.text_out = text_out
 
     def fetch_record(self, spindle_id, data):
         """
@@ -40,24 +41,31 @@ class CompDataBase(DataBase):
         self.cur.execute("""
         SELECT SpindleID, Date, TorqueAct, QSCode
         FROM {}""".format(self.table))
-        print("读取数据中……")
+        self.text_out("读取数据中……")
         row = self.cur.fetchone()
         if row is None:
             raise IndexError("没有数据")
         start_date = row[1]
         end_date = None
+        count = 500
         while row is not None:
             if row[0] not in spindle_id:
                 row = self.cur.fetchone()
                 continue
             end_date = row[1]
+            count -= 1
+            if not count:
+                self.text_out("读取数据{}".format(row[1]))
+                count = 2000
             if row[3] == 1:
                 data[row[0]].total_normal_data[end_date] = row[2]
             data[row[0]].total_data[end_date] = row[3]
             row = self.cur.fetchone()
-        print("序列化……")
-        for spindle in data.values():
-            spindle.serieslize()
+        for key in data.keys():
+            self.text_out("序列化{}号拧紧枪数据……".format(key))
+            data[key].serieslize()
+
+        self.text_out("完成")
         return start_date, end_date
 
     def fetch_record_date(self, spindle_id, start_date, end_date, data):
@@ -116,11 +124,12 @@ class FixedLabel(QLabel):
 
 
 class CompDataProcess(object):
-    def __init__(self, select_spindle_id, start_date, end_date):
+    def __init__(self, path, table, select_spindle_id, start_date, end_date, text_out=print):
         self.data = {}
+        self.text_out = text_out
         for spindle in select_spindle_id:
             self.data[spindle] = SingleDataProcess()
-        db = CompDataBase(r"C:\Users\sanve\OneDrive\文档\课程\2017毕设\拧紧\拧紧.accdb", "Screwing")
+        db = CompDataBase(path, table, text_out=self.text_out)
         if start_date is None or end_date is None:
             self.start_date, self.end_date = db.fetch_record(select_spindle_id, self.data)
         else:
@@ -198,6 +207,7 @@ class CompWidget(QWidget):
         # plot
         for index, button in enumerate(self.parent().ui.buttonGroup.buttons()):
             key = index + 1
+            self.parent().text_out("正在刷新{}号拧紧枪数据".format(key))
             if button.isEnabled():
                 self.labels_mean[key].setVisible(button.isChecked())
                 self.labels_std[key].setVisible(button.isChecked())
@@ -231,6 +241,7 @@ class CompWidget(QWidget):
                                              label="Spindle {}".format(key))
                 self.ax_torque_comp.legend()
         self.figure_canvas.draw()
+        self.parent().text_out("完成")
 
     def plot_detail(self):
         plt.close()
@@ -254,11 +265,12 @@ class CompWidget(QWidget):
 
 
 class SelectDialog(QDialog):
-    def __init__(self, state, parent=None):
+    def __init__(self, path, table, parent=None, text_out=print):
         super().__init__(parent)
         from db_process.ui_spindle_dialog import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.text_out = text_out
 
         self.setWindowFlags(Qt.Window)
 
@@ -271,7 +283,10 @@ class SelectDialog(QDialog):
         self.comp_data_process = None
         self.comp_dialog = None
 
-        self._state = state
+        self.path = path
+        self.table = table
+
+        self._state = LoadDialog
 
     def select_all(self):
         """
@@ -346,7 +361,8 @@ class LoadDialog(SelectDialog):
 
         self.setEnabled(False)
         try:
-            self.comp_data_process = CompDataProcess(select_spindle_id, start_date, end_date)
+            self.comp_data_process = CompDataProcess(self.path, self.table, select_spindle_id, start_date, end_date,
+                                                     text_out=self.text_out)
             self.setEnabled(True)
             self.change_state()
             self.comp_dialog = CompWidget(self)
@@ -363,10 +379,3 @@ class SetDialog(SelectDialog):
     @staticmethod
     def accept(self):
         self.comp_dialog.display_update()
-
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    dialog = SelectDialog(LoadDialog)
-    dialog.show()
-    sys.exit(app.exec_())

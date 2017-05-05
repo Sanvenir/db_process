@@ -92,6 +92,7 @@ class MainWindow(QMainWindow):
         self.ui.actionDefaultReadTime.triggered.connect(self.set_divide_time)
         self.ui.actionPlotSpecgram.triggered.connect(self.plot_specgram)
         self.ui.actionPlotFFT.triggered.connect(self.plot_fft)
+        self.ui.actionOpenComp.triggered.connect(self.load_comp)
 
         # 生产量信息图表，包括生产量子图和生产合格率子图
         self.figure_production = Figure()
@@ -198,6 +199,35 @@ class MainWindow(QMainWindow):
         except Exception as err:
             # TODO:Add Exception Sentence
             raise err
+
+    def load_comp(self):
+        """
+        读取数据库以对比拧紧枪
+        :return: 
+        """
+        self.clear_all()
+        file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
+            self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
+        if not ok:
+            return
+        table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+        if not (ok and table_name):
+            return
+        while True:
+            import pypyodbc
+            from db_process.spindle_comp import SelectDialog
+            try:
+                self.select_dialog = SelectDialog(file_name, table_name, text_out=self.text_out)
+                self.select_dialog.show()
+                return True
+            except pypyodbc.Error as err:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
+                msg_box.exec_()
+                self.text_out("请等待重新输入")
+                table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+                if not (ok and table_name):
+                    return
 
     def load(self):
         """
@@ -600,65 +630,3 @@ class DateWindow(QtWidgets.QDialog):
                                                    self.ui.end_date.date().toString(Qt.ISODate)
         super().accept()
 
-
-if __name__ == "__main__":
-    def load(self):
-        """
-        读取数据库
-        :return: 
-        """
-        self.clear_all()
-        file_name = input("Enter the file name:")
-        while True:
-            table_name = "Screwing"
-            spindle_id = 1
-            import pypyodbc
-            try:
-                self.data = ScrewingDataProcess(
-                    file_name, table_name, spindle_id, text_out=self.ui.statusBar.showMessage)
-                break
-            except  pypyodbc.Error as err:
-                msg_box = QtWidgets.QMessageBox()
-                msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
-                msg_box.exec_()
-                self.text_out("请等待重新输入")
-        self.text_out("完成")
-
-        self.file_name = file_name
-        self.table_name = table_name
-        self.spindle_id = spindle_id
-
-        # 设置程序控件值的范围与当前默认值
-        self.ui.start_time.setMinimumDate(
-            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
-        self.ui.start_time.setMaximumDate(
-            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
-        self.ui.start_time.setDate(
-            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
-        self.ui.end_time.setMinimumDate(
-            QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
-        self.ui.end_time.setMaximumDate(
-            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
-        self.ui.end_time.setDate(
-            QDate.fromString(str(self.data.part_date[-1].date()), "yyyy-MM-dd"))
-        self.ui.start_num.setMinimum(0)
-        self.ui.start_num.setMaximum(len(self.data.part_date) - 1)
-        self.ui.start_num.setValue(0)
-        self.ui.end_num.setMinimum(0)
-        self.ui.end_num.setMaximum(len(self.data.part_date) - 1)
-        self.ui.end_num.setValue(len(self.data.part_date) - 1)
-
-        # 激活控件
-        self.ui.actionChange_Spindle_ID.setEnabled(True)
-        self.ui.centralWidget.setEnabled(True)
-        self.ui.centralWidget.setEnabled(True)
-        self.ui.menuBar.setEnabled(True)
-        self.ui.actionspc_xr.setEnabled(True)
-
-        # 以时间为横轴作图
-        self.plot_by_time()
-
-    app = QtWidgets.QApplication(sys.argv)
-    win = MainWindow()
-    load(win)
-    sys.exit(app.exec_())

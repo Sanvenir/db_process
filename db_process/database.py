@@ -77,9 +77,3 @@ class ScrewingDataBase(DataBase):
         WHERE SpindleID={} AND OK=-1 AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
                          format(record, self.table, spindle_id, start_date, end_date))
         return Series(dict(self.cur.fetchall()))
-
-
-if __name__ == "__main__":
-    path = r"C:\Users\sanve\Documents\Learn\db_process\拧紧.accdb"
-    table = "Screwing"
-    data = ScrewingDataBase(path, table)
