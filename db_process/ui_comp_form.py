@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui/comp_dialog.ui'
+# Form implementation generated from reading ui file 'ui/comp_form.ui'
 #
 # Created by: PyQt5 UI code generator 5.8.2
 #
@@ -8,15 +8,20 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(640, 480)
-        self.horizontalLayout = QtWidgets.QHBoxLayout(Dialog)
+class Ui_Form(object):
+    def setupUi(self, Form):
+        Form.setObjectName("Form")
+        Form.resize(640, 480)
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Form.sizePolicy().hasHeightForWidth())
+        Form.setSizePolicy(sizePolicy)
+        self.horizontalLayout = QtWidgets.QHBoxLayout(Form)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
-        self.radioButtonByTime = QtWidgets.QRadioButton(Dialog)
+        self.radioButtonByTime = QtWidgets.QRadioButton(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -24,29 +29,25 @@ class Ui_Dialog(object):
         self.radioButtonByTime.setSizePolicy(sizePolicy)
         self.radioButtonByTime.setChecked(True)
         self.radioButtonByTime.setObjectName("radioButtonByTime")
-        self.buttonGroup = QtWidgets.QButtonGroup(Dialog)
-        self.buttonGroup.setObjectName("buttonGroup")
-        self.buttonGroup.addButton(self.radioButtonByTime)
         self.verticalLayout.addWidget(self.radioButtonByTime)
-        self.radioButtonByCount = QtWidgets.QRadioButton(Dialog)
+        self.radioButtonByCount = QtWidgets.QRadioButton(Form)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.radioButtonByCount.sizePolicy().hasHeightForWidth())
         self.radioButtonByCount.setSizePolicy(sizePolicy)
         self.radioButtonByCount.setObjectName("radioButtonByCount")
-        self.buttonGroup.addButton(self.radioButtonByCount)
         self.verticalLayout.addWidget(self.radioButtonByCount)
-        self.line = QtWidgets.QFrame(Dialog)
+        self.line = QtWidgets.QFrame(Form)
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
         self.verticalLayout.addWidget(self.line)
-        self.groupBox_6 = QtWidgets.QGroupBox(Dialog)
-        self.groupBox_6.setObjectName("groupBox_6")
-        self.verticalLayout.addWidget(self.groupBox_6)
+        self.groupBoxQualification = QtWidgets.QGroupBox(Form)
+        self.groupBoxQualification.setObjectName("groupBoxQualification")
+        self.verticalLayout.addWidget(self.groupBoxQualification)
         self.horizontalLayout.addLayout(self.verticalLayout)
-        self.tabWidget = QtWidgets.QTabWidget(Dialog)
+        self.tabWidget = QtWidgets.QTabWidget(Form)
         self.tabWidget.setObjectName("tabWidget")
         self.tab_torque_var = QtWidgets.QWidget()
         self.tab_torque_var.setObjectName("tab_torque_var")
@@ -73,21 +74,21 @@ class Ui_Dialog(object):
         self.tabWidget.addTab(self.tab_torque_dis, "")
         self.horizontalLayout.addWidget(self.tabWidget)
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(Form)
         self.tabWidget.setCurrentIndex(0)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        QtCore.QMetaObject.connectSlotsByName(Form)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
-        self.radioButtonByTime.setText(_translate("Dialog", "按时间绘图"))
-        self.radioButtonByCount.setText(_translate("Dialog", "按序号绘图"))
-        self.groupBox_6.setTitle(_translate("Dialog", "合格率"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_var), _translate("Dialog", "扭矩变化"))
-        self.groupBoxSpindleID.setTitle(_translate("Dialog", "拧紧枪号"))
-        self.groupBoxMean.setTitle(_translate("Dialog", "均值"))
-        self.groupBoxStd.setTitle(_translate("Dialog", "标准差"))
-        self.groupBoxKurt.setTitle(_translate("Dialog", "峰度"))
-        self.groupBoxSkew.setTitle(_translate("Dialog", "偏度"))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_dis), _translate("Dialog", "扭矩分布"))
+        Form.setWindowTitle(_translate("Form", "Form"))
+        self.radioButtonByTime.setText(_translate("Form", "按时间绘图"))
+        self.radioButtonByCount.setText(_translate("Form", "按序号绘图"))
+        self.groupBoxQualification.setTitle(_translate("Form", "合格率"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_var), _translate("Form", "扭矩变化"))
+        self.groupBoxSpindleID.setTitle(_translate("Form", "拧紧枪号"))
+        self.groupBoxMean.setTitle(_translate("Form", "均值"))
+        self.groupBoxStd.setTitle(_translate("Form", "标准差"))
+        self.groupBoxKurt.setTitle(_translate("Form", "峰度"))
+        self.groupBoxSkew.setTitle(_translate("Form", "偏度"))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_torque_dis), _translate("Form", "扭矩分布"))
 

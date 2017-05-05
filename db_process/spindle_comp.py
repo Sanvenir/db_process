@@ -2,19 +2,23 @@
 # -*- coding: utf-8 -*-
 
 import sys
+from functools import partial
 
 import matplotlib
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout, QWidget, QLabel, QPushButton, QSizePolicy
 from pandas import Series
-
-from db_process.config import Configuration as cf
-from db_process.database import DataBase
 
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from db_process.custom_class import MyFigureCanvas
+
+import numpy as np
+
+
+from db_process.config import Configuration as cf
+from db_process.database import DataBase
 
 
 class CompDataBase(DataBase):
@@ -44,6 +48,7 @@ class CompDataBase(DataBase):
         end_date = None
         while row is not None:
             if row[0] not in spindle_id:
+                row = self.cur.fetchone()
                 continue
             end_date = row[1]
             if row[3] == 1:
@@ -75,6 +80,7 @@ class CompDataBase(DataBase):
         start_date = row[1]
         while row is not None:
             if row[0] not in spindle_id:
+                row = self.cur.fetchone()
                 continue
             end_date = row[1]
             if row[3] == 1:
@@ -103,6 +109,12 @@ class SingleDataProcess(object):
         self.total_normal_data = Series(self.total_normal_data)
 
 
+class FixedLabel(QLabel):
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.setSizePolicy(QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed))
+
+
 class CompDataProcess(object):
     def __init__(self, select_spindle_id, start_date, end_date):
         self.data = {}
@@ -115,11 +127,11 @@ class CompDataProcess(object):
             self.start_date, self.end_date = db.fetch_record_date(select_spindle_id, start_date, end_date, self.data)
 
 
-class CompDialog(QDialog):
+class CompWidget(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
-        from Scripts.ui_comp_dialog import Ui_Dialog
-        self.ui = Ui_Dialog()
+        from db_process.ui_comp_form import Ui_Form
+        self.ui = Ui_Form()
         self.ui.setupUi(self)
 
         self.start_time = None
@@ -136,50 +148,119 @@ class CompDialog(QDialog):
         layout_torque.addWidget(self.figure_canvas)
         self.ui.tab_torque_var.setLayout(layout_torque)
 
+        self.labels_qualification = {index : FixedLabel() for index in self.parent().comp_data_process.data.keys()}
+        self.labels_mean = {index: FixedLabel() for index in self.parent().comp_data_process.data.keys()}
+        self.labels_std = {index: FixedLabel() for index in self.parent().comp_data_process.data.keys()}
+        self.labels_kurt = {index: FixedLabel() for index in self.parent().comp_data_process.data.keys()}
+        self.labels_skew = {index: FixedLabel() for index in self.parent().comp_data_process.data.keys()}
+        self.buttons_spindle = {index: QPushButton() for index in self.parent().comp_data_process.data.keys()}
+
+        layout_qualification = QVBoxLayout()
+        layout_mean = QVBoxLayout()
+        layout_std = QVBoxLayout()
+        layout_kurt = QVBoxLayout()
+        layout_skew = QVBoxLayout()
+        layout_spindle = QVBoxLayout()
+
+        for key in self.parent().comp_data_process.data.keys():
+            layout_qualification.addWidget(self.labels_qualification[key])
+            layout_mean.addWidget(self.labels_mean[key])
+            layout_std.addWidget(self.labels_std[key])
+            layout_kurt.addWidget(self.labels_kurt[key])
+            layout_skew.addWidget(self.labels_skew[key])
+            layout_spindle.addWidget(self.buttons_spindle[key])
+            self.buttons_spindle[key].setText("{}号枪".format(key))
+            self.buttons_spindle[key].clicked.connect(partial(self.plot_hist, key))
+
+        self.ui.groupBoxQualification.setLayout(layout_qualification)
+        self.ui.groupBoxMean.setLayout(layout_mean)
+        self.ui.groupBoxStd.setLayout(layout_std)
+        self.ui.groupBoxKurt.setLayout(layout_kurt)
+        self.ui.groupBoxSkew.setLayout(layout_skew)
+        self.ui.groupBoxSpindleID.setLayout(layout_spindle)
+
         self.figure_canvas.set_mouse_double_click(self.plot_detail)
+        self.display_update()
 
-        self.plot()
-        self.show()
+    def plot_hist(self, spindle_id):
+        plt.close()
+        print(spindle_id)
+        plt.hist(self.parent().comp_data_process.data[spindle_id].total_normal_data[self.start_time:self.end_time],
+                 np.arange(12., 25., 0.2), histtype="stepfilled")
+        plt.show()
 
-    def plot(self):
+    def display_update(self):
+        # update numbers
         self.ax_torque_comp.clear()
         self.start_time = self.parent().ui.dateEditStart.date().toString(Qt.ISODate)
         self.end_time = self.parent().ui.dateEditEnd.date().toString(Qt.ISODate)
+
+        # plot
         for index, button in enumerate(self.parent().ui.buttonGroup.buttons()):
+            key = index + 1
+            if button.isEnabled():
+                self.labels_mean[key].setVisible(button.isChecked())
+                self.labels_std[key].setVisible(button.isChecked())
+                self.labels_kurt[key].setVisible(button.isChecked())
+                self.labels_skew[key].setVisible(button.isChecked())
+                self.buttons_spindle[key].setVisible(button.isChecked())
+                self.labels_qualification[key].setVisible(button.isChecked())
             if button.isChecked():
+                self.labels_mean[key].setNum(
+                    self.parent().comp_data_process.data[key].total_normal_data[self.start_time:self.end_time].mean())
+                self.labels_std[key].setNum(
+                    self.parent().comp_data_process.data[key].total_normal_data[self.start_time:self.end_time].std())
+                self.labels_kurt[key].setNum(
+                    self.parent().comp_data_process.data[key].total_normal_data[self.start_time:self.end_time].kurt())
+                self.labels_skew[key].setNum(
+                    self.parent().comp_data_process.data[key].total_normal_data[self.start_time:self.end_time].skew())
+                self.labels_qualification[key].setText(
+                    "{}号枪：{:<.2f}%".format(
+                        key,
+                        len(self.parent().comp_data_process.data[key].total_normal_data[self.start_time:self.end_time])
+                        / len(self.parent().comp_data_process.data[key].total_data[self.start_time:self.end_time])
+                        * 100)
+                )
                 if self.ui.radioButtonByTime.isChecked():
-                    self.ax_torque_comp.plot(self.parent().comp_data_process.data[index + 1].
+                    self.ax_torque_comp.plot(self.parent().comp_data_process.data[key].
                                              total_normal_data[self.start_time:self.end_time],
-                                             label="Spindle {}".format(index + 1))
+                                             label="Spindle {}".format(key))
                 if self.ui.radioButtonByCount.isChecked():
-                    self.ax_torque_comp.plot(self.parent().comp_data_process.data[index + 1].
+                    self.ax_torque_comp.plot(self.parent().comp_data_process.data[key].
                                              total_normal_data[self.start_time:self.end_time].tolist(),
-                                             label="Spindle {}".format(index + 1))
+                                             label="Spindle {}".format(key))
                 self.ax_torque_comp.legend()
         self.figure_canvas.draw()
 
     def plot_detail(self):
         plt.close()
-        for index, button in enumerate(self.parent().ui.buttonGroup.buttons()):
-            if button.isChecked():
-                if self.ui.radioButtonByTime.isChecked():
-                    plt.plot(self.parent().comp_data_process.data[index + 1].
-                             total_normal_data[self.start_time:self.end_time],
-                             label="Spindle {}".format(index + 1))
-                if self.ui.radioButtonByCount.isChecked():
-                    plt.plot(self.parent().comp_data_process.data[index + 1].
-                             total_normal_data[self.start_time:self.end_time].tolist(),
-                             label="Spindle {}".format(index + 1))
-                plt.legend()
-        plt.show()
+        try:
+            for index, button in enumerate(self.parent().ui.buttonGroup.buttons()):
+                if button.isChecked():
+                    if self.ui.radioButtonByTime.isChecked():
+                        plt.plot(self.parent().comp_data_process.data[index + 1].
+                                 total_normal_data[self.start_time:self.end_time],
+                                 label="Spindle {}".format(index + 1))
+                    if self.ui.radioButtonByCount.isChecked():
+                        plt.plot(self.parent().comp_data_process.data[index + 1].
+                                 total_normal_data[self.start_time:self.end_time].tolist(),
+                                 label="Spindle {}".format(index + 1))
+                    plt.legend()
+            plt.show()
+        except Exception as err:
+            msg_box = QMessageBox()
+            msg_box.setText(self.tr("错误:{}\n可能为处理数据量过大，请尝试缩小时间范围再获取分布图".format(err)))
+            msg_box.exec_()
 
 
 class SelectDialog(QDialog):
     def __init__(self, state, parent=None):
         super().__init__(parent)
-        from Scripts.ui_spindle_dialog import Ui_Dialog
+        from db_process.ui_spindle_dialog import Ui_Dialog
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+
+        self.setWindowFlags(Qt.Window)
 
         self.ui.dateEditEnd.setDate(QDate.currentDate())
         self.ui.dateEditStart.setDate(QDate.currentDate().addMonths(-cf.reverse_month))
@@ -268,9 +349,8 @@ class LoadDialog(SelectDialog):
             self.comp_data_process = CompDataProcess(select_spindle_id, start_date, end_date)
             self.setEnabled(True)
             self.change_state()
-            self.comp_dialog = CompDialog(self)
-            self.comp_dialog.exec()
-            self.close()
+            self.comp_dialog = CompWidget(self)
+            self.ui.horizontalLayout.addWidget(self.comp_dialog)
         except IndexError as err:
             msg_box = QMessageBox()
             msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
@@ -282,7 +362,7 @@ class LoadDialog(SelectDialog):
 class SetDialog(SelectDialog):
     @staticmethod
     def accept(self):
-        self.comp_dialog.plot()
+        self.comp_dialog.display_update()
 
 
 if __name__ == "__main__":
