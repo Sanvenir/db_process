@@ -94,6 +94,7 @@ class MainWindow(QMainWindow):
         self.ui.actionPlotSpecgram.triggered.connect(self.plot_specgram)
         self.ui.actionPlotFFT.triggered.connect(self.plot_fft)
         self.ui.actionOpenComp.triggered.connect(self.load_comp)
+        self.ui.actionSpindleFatigue.triggered.connect(self.load_fatigue)
 
         # 生产量信息图表，包括生产量子图和生产合格率子图
         self.figure_production = Figure()
@@ -201,12 +202,40 @@ class MainWindow(QMainWindow):
             # TODO:Add Exception Sentence
             raise err
 
+    def load_fatigue(self):
+        """
+        开启疲劳计算模块
+        :return: 
+        """
+        file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
+            self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
+        if not ok:
+            return
+        table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+        if not (ok and table_name):
+            return
+        while True:
+            import pypyodbc
+            from db_process.fatigue_process import FatigueDialog
+            try:
+                self.fatigue_dialog = FatigueDialog(file_name, table_name, text_out=self.text_out)
+                return True
+            except pypyodbc.Error as err:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
+                msg_box.exec_()
+                self.text_out("请等待重新输入")
+                table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+                if not (ok and table_name):
+                    return
+
+
+
     def load_comp(self):
         """
         读取数据库以对比拧紧枪
         :return: 
         """
-        self.clear_all()
         file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
             self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
         if not ok:

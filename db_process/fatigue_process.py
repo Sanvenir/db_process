@@ -4,7 +4,7 @@
 from numpy import inf, NaN
 from pandas import Series
 
-from PyQt5.QtWidgets import QDialog, QVBoxLayout
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QInputDialog
 from PyQt5.QtCore import Qt
 
 import matplotlib
@@ -116,16 +116,27 @@ class FatigueDialog(QDialog):
         self.show()
 
     def update_fatigue(self):
-        self.ax_fatigue.clear()
-        spindle_id = self.ui.spinBoxSpindleID.value()
-        start_date = self.ui.dateEditUpdateDate.date().toString(Qt.ISODate)
-        data_process = FatigueDataProcess(self.database, spindle_id, start_date)
-        fatigue = data_process.get_fatigue()
-        self.ax_fatigue.plot(fatigue)
-        self.text_out("完成")
-        self.figure_canvas.draw()
-        assert isinstance(fatigue, Series)
-        self.ui.labelCurrentFatigue.setNum(fatigue[-1])
+        import pypyodbc
+        try:
+            self.ax_fatigue.clear()
+            spindle_id = self.ui.spinBoxSpindleID.value()
+            start_date = self.ui.dateEditUpdateDate.date().toString(Qt.ISODate)
+            data_process = FatigueDataProcess(self.database, spindle_id, start_date)
+            fatigue = data_process.get_fatigue()
+            self.ax_fatigue.plot(fatigue)
+            self.text_out("完成")
+            self.figure_canvas.draw()
+            assert isinstance(fatigue, Series)
+            self.ui.labelCurrentFatigue.setNum(fatigue[-1])
+        except pypyodbc.Error as err:
+            msg_box = QMessageBox()
+            msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
+            msg_box.exec_()
+            self.text_out("请等待重新输入")
+            table_name, ok = QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
+            if ok:
+                self.database.table = table_name
+
 
 if __name__ == "__main__":
     import sys
