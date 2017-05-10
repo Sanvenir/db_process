@@ -9,6 +9,7 @@ import pandas as pd
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow
@@ -19,7 +20,6 @@ from db_process.ui_datewindow import Ui_Dialog
 
 from db_process.process import ScrewingDataProcess
 from db_process.config import Configuration as cf
-from db_process.custom_class import MyFigureCanvas
 
 
 def log_load(cls):
@@ -90,6 +90,7 @@ class MainWindow(QMainWindow):
         self.ui.actionPartNum.triggered.connect(self.set_series_num)
         self.ui.actionReverseTime.triggered.connect(self.set_reverse_month)
         self.ui.actionDefaultReadTime.triggered.connect(self.set_divide_time)
+        self.ui.actionDefaultLatestNum.triggered.connect(self.set_default_latest_num)
         self.ui.actionPlotSpecgram.triggered.connect(self.plot_specgram)
         self.ui.actionPlotFFT.triggered.connect(self.plot_fft)
         self.ui.actionOpenComp.triggered.connect(self.load_comp)
@@ -98,14 +99,14 @@ class MainWindow(QMainWindow):
         self.figure_production = Figure()
         self.ax_production = self.figure_production.add_subplot(211)
         self.ax_qualification = self.figure_production.add_subplot(212)
-        self.figure_canvas_production = MyFigureCanvas(self.figure_production)
+        self.figure_canvas_production = FigureCanvas(self.figure_production)
 
         # 扭矩信息图表，包括扭矩平均值子图，标准差子图，扭矩分布直方图
         self.figure_torque = Figure()
         self.ax_torque_mean = self.figure_torque.add_subplot(311)
         self.ax_torque_std = self.figure_torque.add_subplot(312)
         self.ax_torque_hist = self.figure_torque.add_subplot(313)
-        self.figure_canvas_torque = MyFigureCanvas(self.figure_torque)
+        self.figure_canvas_torque = FigureCanvas(self.figure_torque)
 
         # 添加图表
         layout_production = QtWidgets.QVBoxLayout()
@@ -600,6 +601,14 @@ class MainWindow(QMainWindow):
                                                     cf.reverse_month, 1, 12)
         if ok:
             cf.reverse_month = reverse
+
+    def set_default_latest_num(self):
+        num, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"),
+                                                    self.tr("默认最新读取数据量（设置读取最新数据时，\n"
+                                                            "（每把拧紧枪）需要读取多少行数据"),
+                                                    cf.default_latest_num, 100, 1000000)
+        if ok:
+            cf.default_latest_num = num
 
     def plot_specgram(self):
         from math import log2

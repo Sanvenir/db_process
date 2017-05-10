@@ -412,7 +412,7 @@
           </sizepolicy>
          </property>
          <property name="text">
-          <string>读取全部数据</string>
+          <string>读取最新数据</string>
          </property>
         </widget>
        </item>

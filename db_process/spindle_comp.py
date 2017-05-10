@@ -1,22 +1,20 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import sys
 from functools import partial
 
-import matplotlib
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout, QWidget, QLabel, QPushButton, QSizePolicy
 from pandas import Series
 
+import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
-from db_process.custom_class import MyFigureCanvas
 
 import numpy as np
 
-
+from db_process.custom_class import MyFigureCanvas
 from db_process.config import Configuration as cf
 from db_process.database import DataBase
 
@@ -38,28 +36,30 @@ class CompDataBase(DataBase):
         :param data: 将数据存入该字典中，关键字为拧紧枪号，内容为每个拧紧枪的SingleDataProcess
         :return: 选取数据的开始时间与结束时间
         """
+        from db_process.config import Configuration as cf
         self.cur.execute("""
-        SELECT SpindleID, Date, TorqueAct, QSCode
-        FROM {}""".format(self.table))
+        SELECT TOP {1} SpindleID, Date, TorqueAct, QSCode
+        FROM {0}
+        ORDER BY ID DESC""".format(self.table, cf.default_latest_num * 22))
         self.text_out("读取数据中……")
         row = self.cur.fetchone()
         if row is None:
             raise IndexError("没有数据")
-        start_date = row[1]
-        end_date = None
+        end_date = row[1]
+        start_date = None
         count = 500
         while row is not None:
             if row[0] not in spindle_id:
                 row = self.cur.fetchone()
                 continue
-            end_date = row[1]
+            start_date = row[1]
             count -= 1
             if not count:
                 self.text_out("读取数据{}".format(row[1]))
                 count = 2000
             if row[3] == 1:
-                data[row[0]].total_normal_data[end_date] = row[2]
-            data[row[0]].total_data[end_date] = row[3]
+                data[row[0]].total_normal_data[start_date] = row[2]
+            data[row[0]].total_data[start_date] = row[3]
             row = self.cur.fetchone()
         for key in data.keys():
             self.text_out("序列化{}号拧紧枪数据……".format(key))

@@ -277,5 +277,5 @@ class Ui_Dialog(object):
         self.dateEditStart.setDisplayFormat(_translate("Dialog", "yyyy/M/d"))
         self.label_2.setText(_translate("Dialog", "结束日期"))
         self.dateEditEnd.setDisplayFormat(_translate("Dialog", "yyyy/M/d"))
-        self.checkBoxAllData.setText(_translate("Dialog", "读取全部数据"))
+        self.checkBoxAllData.setText(_translate("Dialog", "读取最新数据"))
 
