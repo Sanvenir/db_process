@@ -77,3 +77,108 @@ class ScrewingDataBase(DataBase):
         WHERE SpindleID={} AND OK=-1 AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
                          format(record, self.table, spindle_id, start_date, end_date))
         return Series(dict(self.cur.fetchall()))
+
+
+class FatigueDataBase(DataBase):
+    def __init__(self, path, table, text_out=print):
+        """
+        读取拧紧枪数据库文件
+        :param path: 数据库文件绝对路径
+        :param table: 数据表名称
+        """
+        super().__init__(path, table)
+        self.text_out = text_out
+
+    def fetch_record(self, spindle_id, start_date):
+        self.text_out("开始查询")
+        self.cur.execute("""
+        SELECT Date, TorqueAct
+        FROM {}
+        WHERE DateDiff('d', '{}', Date)>0 AND QSCode=1 AND SpindleID={}"""
+                         .format(self.table, start_date, spindle_id))
+        self.text_out("开始读取")
+        return Series(dict(self.cur.fetchall()))
+
+
+class CompDataBase(DataBase):
+    def __init__(self, path, table, text_out=print):
+        """
+        读取拧紧枪数据库文件
+        :param path: 数据库文件绝对路径
+        :param table: 数据表名称
+        """
+        super().__init__(path, table)
+        self.text_out = text_out
+
+    def fetch_record(self, spindle_id, data):
+        """
+        获取数据库数据
+        :param spindle_id: 所需获取的拧紧枪号集合 
+        :param data: 将数据存入该字典中，关键字为拧紧枪号，内容为每个拧紧枪的SingleDataProcess
+        :return: 选取数据的开始时间与结束时间
+        """
+        from db_process.config import Configuration as cf
+        self.cur.execute("""
+        SELECT TOP {1} SpindleID, Date, TorqueAct, QSCode
+        FROM {0}
+        ORDER BY ID DESC""".format(self.table, cf.default_latest_num * 22))
+        self.text_out("读取数据中……")
+        row = self.cur.fetchone()
+        if row is None:
+            raise IndexError("没有数据")
+        end_date = row[1]
+        start_date = None
+        count = 500
+        while row is not None:
+            if row[0] not in spindle_id:
+                row = self.cur.fetchone()
+                continue
+            start_date = row[1]
+            count -= 1
+            if not count:
+                self.text_out("读取数据{}".format(row[1]))
+                count = 2000
+            if row[3] == 1:
+                data[row[0]].total_normal_data[start_date] = row[2]
+            data[row[0]].total_data[start_date] = row[3]
+            row = self.cur.fetchone()
+        for key in data.keys():
+            self.text_out("序列化{}号拧紧枪数据……".format(key))
+            data[key].serieslize()
+
+        self.text_out("完成")
+        return start_date, end_date
+
+    def fetch_record_date(self, spindle_id, start_date, end_date, data):
+        """
+        按时间读取数据
+        :param spindle_id: 
+        :param start_date: 开始日期
+        :param end_date: 结束日期
+        :param data: 
+        :return: 
+        """
+        self.cur.execute("""
+        SELECT SpindleID, Date, TorqueAct, QSCode
+        FROM {} WHERE DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
+                         format(self.table, start_date, end_date))
+        print("读取数据中……")
+        row = self.cur.fetchone()
+        if row is None:
+            raise IndexError("选定范围内没有数据")
+        start_date = row[1]
+        while row is not None:
+            if row[0] not in spindle_id:
+                row = self.cur.fetchone()
+                continue
+            end_date = row[1]
+            if row[3] == 1:
+                data[row[0]].total_normal_data[end_date] = row[2]
+            data[row[0]].total_data[end_date] = row[3]
+            row = self.cur.fetchone()
+        if not data.keys():
+            raise IndexError("选定范围内没有数据")
+        print("序列化……")
+        for spindle in data.values():
+            spindle.serieslize()
+        return start_date, end_date

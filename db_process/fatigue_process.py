@@ -13,28 +13,7 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-from db_process.database import DataBase
-
-
-class FatigueDataBase(DataBase):
-    def __init__(self, path, table, text_out=print):
-        """
-        读取拧紧枪数据库文件
-        :param path: 数据库文件绝对路径
-        :param table: 数据表名称
-        """
-        super().__init__(path, table)
-        self.text_out = text_out
-
-    def fetch_record(self, spindle_id, start_date):
-        self.text_out("开始查询")
-        self.cur.execute("""
-        SELECT Date, TorqueAct
-        FROM {}
-        WHERE DateDiff('d', '{}', Date)>0 AND QSCode=1 AND SpindleID={}"""
-                         .format(self.table, start_date, spindle_id))
-        self.text_out("开始读取")
-        return Series(dict(self.cur.fetchall()))
+from db_process.database import FatigueDataBase
 
 
 class FatigueDataProcess(object):
