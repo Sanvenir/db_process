@@ -4,6 +4,7 @@
 import pypyodbc
 
 from pandas import Series
+from db_process.config import Configuration as cf
 
 
 class DataBase(object):
@@ -36,6 +37,33 @@ class ScrewingDataBase(DataBase):
         :param table: 数据表名称
         """
         super().__init__(path, table)
+
+    def fetch_new_all(self, spindle_id):
+        """
+        获取最新数据
+        :param spindle_id:指定拧紧枪号
+        :return: 
+        """
+        self.cur.execute("""
+        SELECT TOP {} Date, QSCode
+        From {}
+        WHERE SpindleID={} ORDER BY ID DESC
+        """.format(cf.latest_num, self.table, spindle_id))
+        return Series(dict(self.cur.fetchall()))
+
+    def fetch_new_normal(self, record, spindle_id):
+        """
+        获取最新数据
+        :param record:读取字段名
+        :param spindle_id:指定拧紧枪号
+        :return: 
+        """
+        self.cur.execute("""
+        SELECT TOP {} Date, {}
+        From {}
+        WHERE SpindleID={} AND OK=-1 ORDER BY ID DESC
+        """.format(cf.latest_num, record, self.table, spindle_id))
+        return Series(dict(self.cur.fetchall()))
 
     def fetch_normal_record(self, record, spindle_id):
         """
@@ -99,6 +127,17 @@ class FatigueDataBase(DataBase):
         self.text_out("开始读取")
         return Series(dict(self.cur.fetchall()))
 
+    def fetch_new_record(self, spindle_id):
+        from db_process.config import Configuration as cf
+        self.text_out("开始查询")
+        self.cur.execute("""
+        SELECT TOP {} Date, TorqueAct
+        FROM {}
+        WHERE QSCode=1 AND SpindleID={} 
+        ORDER BY ID DESC""".format(cf.default_latest_num, self.table, spindle_id))
+        self.text_out("开始读取")
+        return Series(dict(self.cur.fetchall()))
+
 
 class CompDataBase(DataBase):
     def __init__(self, path, table, text_out=print):
@@ -113,11 +152,10 @@ class CompDataBase(DataBase):
     def fetch_record(self, spindle_id, data):
         """
         获取数据库数据
-        :param spindle_id: 所需获取的拧紧枪号集合 
+        :param spindle_id: 所需获取的拧紧枪号集合, 如果为None则读取全部数据
         :param data: 将数据存入该字典中，关键字为拧紧枪号，内容为每个拧紧枪的SingleDataProcess
         :return: 选取数据的开始时间与结束时间
         """
-        from db_process.config import Configuration as cf
         self.cur.execute("""
         SELECT TOP {1} SpindleID, Date, TorqueAct, QSCode
         FROM {0}
@@ -130,7 +168,7 @@ class CompDataBase(DataBase):
         start_date = None
         count = 500
         while row is not None:
-            if row[0] not in spindle_id:
+            if spindle_id is not None and row[0] not in spindle_id:
                 row = self.cur.fetchone()
                 continue
             start_date = row[1]

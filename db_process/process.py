@@ -9,17 +9,33 @@ from db_process.config import Configuration as cf
 
 
 class ScrewingDataProcess(object):
-    def __init__(self, db_file, db_table, spindle_id, data_period=None, text_out=print):
+    def __init__(self, db_file, db_table, spindle_id, data_period=None, text_out=print, fetch_new_data=False):
         """
         获取数据库中的全部数据和全部合格数据，并生成相应的处理序列
         :param db_file: 数据库文件绝对路径
         :param db_table: 数据表名称
         :param spindle_id: 查询的拧紧枪号
+        :param data_period: 读取时间段
         :param text_out: 输出状态的函数，默认为print，期望是窗口statusBar的setText函数
+        :param convert: 值为真时，转换db_file, db_table属性，db_file变为已存在的total_data序列，db_table变为已存在的
+            total_normal_data序列
+        :return: 数据时间段
         """
         self.text_out = text_out
         db = ScrewingDataBase(db_file, db_table)
-        if data_period is None or data_period[0] is None:
+        if fetch_new_data:
+            from datetime import timedelta
+            self.text_out("正在获取{}号拧紧枪所有数据".format(spindle_id))
+            # 全部数据，内容为QSCode，index为日期
+            total_data = db.fetch_new_all(spindle_id)
+            self.total_data = total_data[total_data.first_valid_index().date() + timedelta(1):]
+
+            self.text_out("正在获取{}号拧紧枪合格数据".format(spindle_id))
+            # 正常数据，内容为扭矩值，index为日期
+            total_normal_data = db.fetch_new_normal('TorqueAct', spindle_id)
+            self.total_normal_data = total_normal_data[total_data.first_valid_index().date() + timedelta(1):]
+
+        elif data_period is None or data_period[0] is None:
             self.text_out("正在获取{}号拧紧枪所有数据".format(spindle_id))
             # 全部数据，内容为QSCode，index为日期
             self.total_data = db.fetch_all_record(spindle_id)

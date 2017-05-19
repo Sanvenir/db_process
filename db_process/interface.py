@@ -229,8 +229,6 @@ class MainWindow(QMainWindow):
                 if not (ok and table_name):
                     return
 
-
-
     def load_comp(self):
         """
         读取数据库以对比拧紧枪

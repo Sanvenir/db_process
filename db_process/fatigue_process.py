@@ -17,20 +17,25 @@ from db_process.database import FatigueDataBase
 
 
 class FatigueDataProcess(object):
-    def __init__(self, database, spindle_id, start_date, text_out=print):
+    def __init__(self, database, spindle_id, start_date, text_out=print, monitor=False):
         """
         处理数据
         :param database: 处理用数据库类型（class FatigueDataBase)
         :param spindle_id: 拧紧枪id
         :param start_date: 拧紧枪更换日期
         :param text_out: 输出方式（默认为print输出，应用一般为状态条输出）
+        :param monitor: 是否处于监控状态
         """
+        if monitor is True:
+            self.data = database.fetch_new_record(spindle_id)
         self.data = database.fetch_record(spindle_id, start_date)
+        self.start_date = start_date
         assert isinstance(self.data, Series)
         self.data_mean = self.data.resample('D').mean()
         self.data_max = self.data.resample('D').apply(self._10_percent_largest)
         self.data_min = self.data.resample('D').apply(self._10_percent_smallest)
         self.data_count = self.data.resample('D').apply(len)
+        self.monitor = monitor
 
     def get_fatigue(self):
         r = self.data_min / self.data_max
@@ -44,9 +49,20 @@ class FatigueDataProcess(object):
         nf = 378000000 * 1 / (4 * (1 / 2 / (1 - r)) * tau_a.combine(tau_r, self._combine_func) ** 2)
 
         di = 3.5 * self.data_count / nf
-        print(di.dropna())
 
-        return di.dropna().cumsum()
+        if self.monitor:
+            import pickle, os
+            di_series = Series()
+            if os.path.isfile(r"sav\fatigue.dat"):
+                with open(r"sav\fatigue.dat", "rb") as f:
+                    di_series = pickle.load(f)
+            for index, value in di.dropna().items():
+                di_series[index] = value
+            with open(r"sav\fatigue.dat", "wb") as f:
+                pickle.dump(di_series, f)
+        else:
+            di_series = di.dropna()
+        return di_series[self.start_date:]
 
     @staticmethod
     def _combine_func(tau_a, tau_r):
@@ -68,9 +84,10 @@ class FatigueDataProcess(object):
 
 
 class FatigueDialog(QDialog):
-    def __init__(self, path, table, text_out=print):
+    def __init__(self, path, table, text_out=print, monitor=False):
         super().__init__()
         from db_process.ui_fatigue_dialog import Ui_Dialog
+        self.monitor = monitor
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
 
@@ -84,6 +101,7 @@ class FatigueDialog(QDialog):
         layout_figure = QVBoxLayout()
         layout_figure.addWidget(self.figure_canvas)
         self.ui.groupBoxFigure.setLayout(layout_figure)
+        self.data_process = None
 
         self.text_out = text_out
 
@@ -100,9 +118,12 @@ class FatigueDialog(QDialog):
             self.ax_fatigue.clear()
             spindle_id = self.ui.spinBoxSpindleID.value()
             start_date = self.ui.dateEditUpdateDate.date().toString(Qt.ISODate)
-            data_process = FatigueDataProcess(self.database, spindle_id, start_date)
-            fatigue = data_process.get_fatigue()
-            self.ax_fatigue.plot(fatigue)
+            if self.monitor is True and self.data_process is not None:
+                self.data_process.start_date = start_date
+            else:
+                self.data_process = FatigueDataProcess(self.database, spindle_id, start_date, monitor=self.monitor)
+            fatigue = self.data_process.get_fatigue()
+            self.ax_fatigue.plot(fatigue.cumsum())
             self.text_out("完成")
             self.figure_canvas.draw()
             assert isinstance(fatigue, Series)

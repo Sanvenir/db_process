@@ -776,7 +776,7 @@
   </action>
   <action name="actionOpenComp">
    <property name="text">
-    <string>打开数据库（拧紧枪对比）</string>
+    <string>拧紧枪对比</string>
    </property>
   </action>
   <action name="actionDefaultLatestNum">
@@ -787,6 +787,14 @@
   <action name="actionSpindleFatigue">
    <property name="text">
     <string>疲劳监控</string>
+   </property>
+  </action>
+  <action name="actionOpenMonitor">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>实时监控模式</string>
    </property>
   </action>
  </widget>
