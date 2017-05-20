@@ -6,6 +6,11 @@ import pypyodbc
 from pandas import Series
 from db_process.config import Configuration as cf
 
+sentences = None
+with open(r"config\sql.txt", "r") as f:
+    sentences = f.readlines()
+print(sentences)
+
 
 class DataBase(object):
     def __init__(self, path, table):
@@ -44,11 +49,7 @@ class ScrewingDataBase(DataBase):
         :param spindle_id:指定拧紧枪号
         :return: 
         """
-        self.cur.execute("""
-        SELECT TOP {} Date, QSCode
-        From {}
-        WHERE SpindleID={} ORDER BY ID DESC
-        """.format(cf.latest_num, self.table, spindle_id))
+        self.cur.execute(sentences[0].format(cf.default_latest_num, self.table, spindle_id))
         return Series(dict(self.cur.fetchall()))
 
     def fetch_new_normal(self, record, spindle_id):
@@ -58,11 +59,7 @@ class ScrewingDataBase(DataBase):
         :param spindle_id:指定拧紧枪号
         :return: 
         """
-        self.cur.execute("""
-        SELECT TOP {} Date, {}
-        From {}
-        WHERE SpindleID={} AND OK=-1 ORDER BY ID DESC
-        """.format(cf.latest_num, record, self.table, spindle_id))
+        self.cur.execute(sentences[1].format(cf.default_latest_num, record, self.table, spindle_id))
         return Series(dict(self.cur.fetchall()))
 
     def fetch_normal_record(self, record, spindle_id):
@@ -72,10 +69,7 @@ class ScrewingDataBase(DataBase):
         :param spindle_id: 指定拧紧枪号
         :return: Series数据，index为日期，内容为指定字段名的变量
         """
-        self.cur.execute("""
-        SELECT Date, {}
-        From {}
-        WHERE OK=-1 AND SpindleID={}""".format(record, self.table, spindle_id))
+        self.cur.execute(sentences[2].format(record, self.table, spindle_id))
         return Series(dict(self.cur.fetchall()))
 
     def fetch_all_record(self, spindle_id):
@@ -84,26 +78,15 @@ class ScrewingDataBase(DataBase):
         :param spindle_id:指定拧紧枪号 
         :return: Series数据，index为日期，内容为对应的QSCode
         """
-        self.cur.execute("""
-        SELECT Date, QSCode
-        From {}
-        WHERE SpindleID={}""".format(self.table, spindle_id))
+        self.cur.execute(sentences[3].format(self.table, spindle_id))
         return Series(dict(self.cur.fetchall()))
 
     def fetch_date_all(self, spindle_id, start_date, end_date):
-        self.cur.execute("""
-        SELECT Date, QSCode
-        From {}
-        WHERE SpindleID={} AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
-                         format(self.table, spindle_id, start_date, end_date))
+        self.cur.execute(sentences[4].format(self.table, spindle_id, start_date, end_date))
         return Series(dict(self.cur.fetchall()))
 
     def fetch_date_normal(self, record, spindle_id, start_date, end_date):
-        self.cur.execute("""
-        SELECT Date, {}
-        From {}
-        WHERE SpindleID={} AND OK=-1 AND DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
-                         format(record, self.table, spindle_id, start_date, end_date))
+        self.cur.execute(sentences[5].format(record, self.table, spindle_id, start_date, end_date))
         return Series(dict(self.cur.fetchall()))
 
 
@@ -119,22 +102,13 @@ class FatigueDataBase(DataBase):
 
     def fetch_record(self, spindle_id, start_date):
         self.text_out("开始查询")
-        self.cur.execute("""
-        SELECT Date, TorqueAct
-        FROM {}
-        WHERE DateDiff('d', '{}', Date)>0 AND QSCode=1 AND SpindleID={}"""
-                         .format(self.table, start_date, spindle_id))
+        self.cur.execute(sentences[6] .format(self.table, start_date, spindle_id))
         self.text_out("开始读取")
         return Series(dict(self.cur.fetchall()))
 
     def fetch_new_record(self, spindle_id):
-        from db_process.config import Configuration as cf
         self.text_out("开始查询")
-        self.cur.execute("""
-        SELECT TOP {} Date, TorqueAct
-        FROM {}
-        WHERE QSCode=1 AND SpindleID={} 
-        ORDER BY ID DESC""".format(cf.default_latest_num, self.table, spindle_id))
+        self.cur.execute(sentences[7].format(cf.default_latest_num, self.table, spindle_id))
         self.text_out("开始读取")
         return Series(dict(self.cur.fetchall()))
 
@@ -156,10 +130,7 @@ class CompDataBase(DataBase):
         :param data: 将数据存入该字典中，关键字为拧紧枪号，内容为每个拧紧枪的SingleDataProcess
         :return: 选取数据的开始时间与结束时间
         """
-        self.cur.execute("""
-        SELECT TOP {1} SpindleID, Date, TorqueAct, QSCode
-        FROM {0}
-        ORDER BY ID DESC""".format(self.table, cf.default_latest_num * 22))
+        self.cur.execute(sentences[8].format(self.table, cf.default_latest_num * 22))
         self.text_out("读取数据中……")
         row = self.cur.fetchone()
         if row is None:
@@ -196,10 +167,7 @@ class CompDataBase(DataBase):
         :param data: 
         :return: 
         """
-        self.cur.execute("""
-        SELECT SpindleID, Date, TorqueAct, QSCode
-        FROM {} WHERE DateDiff('d', '{}', Date)>0 AND DateDiff('d', '{}', Date)<0""".
-                         format(self.table, start_date, end_date))
+        self.cur.execute(sentences[9].format(self.table, start_date, end_date))
         print("读取数据中……")
         row = self.cur.fetchone()
         if row is None:

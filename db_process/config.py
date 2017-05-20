@@ -7,5 +7,4 @@ class Configuration(object):
     series_num = 50
     reverse_month = 1
     default_latest_num = 5000
-    latest_num = 5000
 

@@ -156,9 +156,3 @@ class MonitorMainWindow(MainWindow):
                 msg_box.exec_()
                 return False
 
-
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    win = MonitorMainWindow(r"C:\Users\sanve\Documents\Learn\db_process\20140901-20150807 - ok.accdb", r"aaa")
-    sys.exit(app.exec())

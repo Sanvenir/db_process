@@ -18,7 +18,7 @@ from PyQt5.QtCore import QDate, Qt
 from db_process.ui_mainwindow import Ui_MainWindow
 from db_process.ui_datewindow import Ui_Dialog
 
-from db_process.process import ScrewingDataProcess
+from db_process.process_mssql import ScrewingDataProcess
 from db_process.config import Configuration as cf
 
 
@@ -205,104 +205,54 @@ class MainWindow(QMainWindow):
         开启疲劳计算模块
         :return: 
         """
-        file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
-            self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
-        if not ok:
-            return
-        table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-        if not (ok and table_name):
-            return
-        while True:
-            import pypyodbc
-            from db_process.fatigue_process import FatigueDialog
-            try:
-                self.fatigue_dialog = FatigueDialog(file_name, table_name, text_out=self.text_out)
-                return True
-            except pypyodbc.Error as err:
-                msg_box = QtWidgets.QMessageBox()
-                msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
-                msg_box.exec_()
-                self.text_out("请等待重新输入")
-                table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-                if not (ok and table_name):
-                    return
+        import pymssql
+        from db_process.fatigue_process_mssql import FatigueDialog
+        try:
+            self.fatigue_dialog = FatigueDialog(text_out=self.text_out, monitor=True)
+            return True
+        except pymssql.Error as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}\n请检查数据库".format(err)))
+            msg_box.exec_()
 
     def load_comp(self):
         """
         读取数据库以对比拧紧枪
         :return: 
         """
-        file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
-            self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
-        if not ok:
-            return
-        table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-        if not (ok and table_name):
-            return
-        while True:
-            import pypyodbc
-            from db_process.spindle_comp import SelectDialog
-            try:
-                self.select_dialog = SelectDialog(file_name, table_name, text_out=self.text_out)
-                self.select_dialog.show()
-                return True
-            except pypyodbc.Error as err:
-                msg_box = QtWidgets.QMessageBox()
-                msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
-                msg_box.exec_()
-                self.text_out("请等待重新输入")
-                table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-                if not (ok and table_name):
-                    return
+        import pymssql
+        from db_process.spindle_comp_mssql import SelectDialog
+        try:
+            self.select_dialog = SelectDialog(text_out=self.text_out)
+            self.select_dialog.show()
+            self.select_dialog.ui.checkBoxAllData.setChecked(True)
+            self.select_dialog.accept()
+            return True
+        except pymssql.Error as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}\n请检查数据库".format(err)))
+            msg_box.exec_()
 
     def load(self):
-        """
-        读取数据库
-        :return: 
-        """
         self.clear_all()
-        file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
-            self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
-        if not ok:
-            return
-        table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-        if not (ok and table_name):
-            return
         spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("查询枪号"), 1, 1, 22)
         if not ok:
             return
-        self.time_period = [None, None]
-        DateWindow(self, self.time_period).exec()
-        while True:
-            import pypyodbc
-            try:
-                self.data = ScrewingDataProcess(
-                    file_name, table_name, spindle_id, self.time_period, text_out=self.ui.statusBar.showMessage)
-                break
-            except pypyodbc.Error as err:
-                msg_box = QtWidgets.QMessageBox()
-                msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
-                msg_box.exec_()
-                self.text_out("请等待重新输入")
-                table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
-                if not (ok and table_name):
-                    return
-            except IndexError as err:
-                msg_box = QtWidgets.QMessageBox()
-                msg_box.setText(self.tr("错误:{}\n本段时间内数据量可能为空，请重新输入".format(err)))
-                msg_box.exec_()
-                self.text_out("请等待重新输入")
-                self.time_period = [None, None]
-                DateWindow(self, self.time_period).exec()
-        self.text_out("完成")
 
-        self.file_name = file_name
-        self.table_name = table_name
+        while True:
+            import pymssql
+            try:
+                self.data = ScrewingDataProcess(spindle_id, text_out=self.ui.statusBar.showMessage, fetch_new_data=True)
+                break
+            except pymssql.Error as err:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setText(self.tr("错误:{}\n请检查数据库".format(err)))
+                msg_box.exec_()
+                return
+        self.text_out("完成")
         self.spindle_id = spindle_id
 
         try:
-
-            # 设置程序控件值的范围与当前默认值
             self.ui.start_time.setMinimumDate(
                 QDate.fromString(str(self.data.part_date[0].date()), "yyyy-MM-dd"))
             self.ui.start_time.setMaximumDate(
@@ -338,7 +288,7 @@ class MainWindow(QMainWindow):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setText(self.tr("错误:{}\n可能为分组量过大，无法生成有效分组".format(err)))
             msg_box.exec_()
-            self.text_out("请重新设定分组数，并重新打开数据库")
+            self.text_out("请重新设定分组数")
             self.time_period = [None, None]
             self.data = None
 
@@ -353,9 +303,8 @@ class MainWindow(QMainWindow):
             self.text_out("与当前存储数据ID相同")
             return
         self.spindle_id = spindle_id
-        self.data = ScrewingDataProcess(
-            self.file_name, self.table_name, self.spindle_id, self.time_period,
-            text_out=self.ui.statusBar.showMessage)
+        self.data = ScrewingDataProcess(self.spindle_id, self.time_period, text_out=self.ui.statusBar.showMessage,
+                                        fetch_new_data=True)
         self.comp_data = None
         self.text_out("完成")
         self.plot_by_time()
@@ -373,9 +322,8 @@ class MainWindow(QMainWindow):
             self.text_out("与当前对比拧紧枪ID相同")
             return
         self.comp_spindle_id = spindle_id
-        self.comp_data = ScrewingDataProcess(
-            self.file_name, self.table_name, self.comp_spindle_id, self.time_period,
-            text_out=self.ui.statusBar.showMessage)
+        self.comp_data = ScrewingDataProcess(self.comp_spindle_id, self.time_period,
+                                             text_out=self.ui.statusBar.showMessage, fetch_new_data=True)
         self.text_out("完成")
         self.plot_by_time()
 
