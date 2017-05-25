@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>212</width>
-    <height>491</height>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,12 +32,24 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <family>等线</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="title">
           <string>拧紧枪选择</string>
          </property>
          <layout class="QFormLayout" name="formLayout">
           <item row="0" column="0">
            <widget class="QCheckBox" name="checkBoxS1">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>1号枪</string>
             </property>
@@ -51,6 +63,12 @@
           </item>
           <item row="0" column="1">
            <widget class="QCheckBox" name="checkBoxS2">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>2号枪</string>
             </property>
@@ -64,6 +82,12 @@
           </item>
           <item row="1" column="0">
            <widget class="QCheckBox" name="checkBoxS3">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>3号枪</string>
             </property>
@@ -77,6 +101,12 @@
           </item>
           <item row="1" column="1">
            <widget class="QCheckBox" name="checkBoxS4">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>4号枪</string>
             </property>
@@ -90,6 +120,12 @@
           </item>
           <item row="2" column="0">
            <widget class="QCheckBox" name="checkBoxS5">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>5号枪</string>
             </property>
@@ -103,6 +139,12 @@
           </item>
           <item row="2" column="1">
            <widget class="QCheckBox" name="checkBoxS6">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>6号枪</string>
             </property>
@@ -116,6 +158,12 @@
           </item>
           <item row="3" column="0">
            <widget class="QCheckBox" name="checkBoxS7">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>7号枪</string>
             </property>
@@ -129,6 +177,12 @@
           </item>
           <item row="3" column="1">
            <widget class="QCheckBox" name="checkBoxS8">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>8号枪</string>
             </property>
@@ -142,6 +196,12 @@
           </item>
           <item row="4" column="0">
            <widget class="QCheckBox" name="checkBoxS9">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>9号枪</string>
             </property>
@@ -155,6 +215,12 @@
           </item>
           <item row="4" column="1">
            <widget class="QCheckBox" name="checkBoxS10">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>10号枪</string>
             </property>
@@ -168,6 +234,12 @@
           </item>
           <item row="5" column="0">
            <widget class="QCheckBox" name="checkBoxS11">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>11号枪</string>
             </property>
@@ -181,6 +253,12 @@
           </item>
           <item row="5" column="1">
            <widget class="QCheckBox" name="checkBoxS12">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>12号枪</string>
             </property>
@@ -194,6 +272,12 @@
           </item>
           <item row="6" column="0">
            <widget class="QCheckBox" name="checkBoxS13">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>13号枪</string>
             </property>
@@ -207,6 +291,12 @@
           </item>
           <item row="6" column="1">
            <widget class="QCheckBox" name="checkBoxS14">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>14号枪</string>
             </property>
@@ -220,6 +310,12 @@
           </item>
           <item row="7" column="0">
            <widget class="QCheckBox" name="checkBoxS15">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>15号枪</string>
             </property>
@@ -233,6 +329,12 @@
           </item>
           <item row="7" column="1">
            <widget class="QCheckBox" name="checkBoxS16">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>16号枪</string>
             </property>
@@ -246,6 +348,12 @@
           </item>
           <item row="8" column="0">
            <widget class="QCheckBox" name="checkBoxS17">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>17号枪</string>
             </property>
@@ -259,6 +367,12 @@
           </item>
           <item row="8" column="1">
            <widget class="QCheckBox" name="checkBoxS18">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>18号枪</string>
             </property>
@@ -272,6 +386,12 @@
           </item>
           <item row="9" column="0">
            <widget class="QCheckBox" name="checkBoxS19">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>19号枪</string>
             </property>
@@ -285,6 +405,12 @@
           </item>
           <item row="9" column="1">
            <widget class="QCheckBox" name="checkBoxS20">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>20号枪</string>
             </property>
@@ -298,6 +424,12 @@
           </item>
           <item row="10" column="0">
            <widget class="QCheckBox" name="checkBoxS21">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>21号枪</string>
             </property>
@@ -311,6 +443,12 @@
           </item>
           <item row="10" column="1">
            <widget class="QCheckBox" name="checkBoxS22">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>22号枪</string>
             </property>
@@ -330,6 +468,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>反选</string>
             </property>
@@ -342,6 +486,12 @@
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>全选</string>
@@ -359,6 +509,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <family>等线</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>开始日期</string>
          </property>
@@ -371,6 +527,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>等线</family>
+           <pointsize>12</pointsize>
+          </font>
          </property>
          <property name="displayFormat">
           <string>yyyy/M/d</string>
@@ -385,6 +547,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <family>等线</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>结束日期</string>
          </property>
@@ -398,6 +566,12 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <family>等线</family>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
          <property name="displayFormat">
           <string>yyyy/M/d</string>
          </property>
@@ -410,6 +584,12 @@
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>等线</family>
+           <pointsize>12</pointsize>
+          </font>
          </property>
          <property name="text">
           <string>读取最新数据</string>
@@ -425,6 +605,12 @@
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
+       </property>
+       <property name="font">
+        <font>
+         <family>等线</family>
+         <pointsize>12</pointsize>
+        </font>
        </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>

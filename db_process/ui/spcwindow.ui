@@ -26,6 +26,25 @@
      </layout>
     </item>
     <item>
+     <widget class="QLabel" name="label_type">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>等线</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>正常</string>
+      </property>
+     </widget>
+    </item>
+    <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="sizeConstraint">
        <enum>QLayout::SetFixedSize</enum>
@@ -38,6 +57,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>SPC组数设置</string>
         </property>
@@ -45,6 +70,12 @@
       </item>
       <item>
        <widget class="QSlider" name="slider_spc">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="maximum">
          <number>1000000</number>
         </property>
@@ -65,6 +96,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>分析长度：</string>
         </property>
@@ -75,6 +112,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="spin_range">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="minimum">
          <number>20</number>
         </property>
@@ -88,6 +131,12 @@
       </item>
       <item>
        <widget class="Line" name="line_3">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -101,6 +150,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>当前组数：</string>
         </property>
@@ -111,6 +166,12 @@
       </item>
       <item>
        <widget class="QSpinBox" name="spin_spc">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="maximum">
          <number>1000000</number>
         </property>
@@ -118,6 +179,12 @@
       </item>
       <item>
        <widget class="Line" name="line">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -130,6 +197,12 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>总组数：</string>
@@ -147,6 +220,12 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>NaT</string>
         </property>
@@ -154,6 +233,12 @@
       </item>
       <item>
        <widget class="Line" name="line_2">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Vertical</enum>
         </property>
@@ -161,6 +246,12 @@
       </item>
       <item>
        <widget class="QPushButton" name="button_spc">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>刷新</string>
         </property>
@@ -176,11 +267,18 @@
      <x>0</x>
      <y>0</y>
      <width>807</width>
-     <height>26</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusbar">
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>12</pointsize>
+    </font>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections>
@@ -191,12 +289,28 @@
    <slot>setValue(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>185</x>
-     <y>255</y>
+     <x>267</x>
+     <y>276</y>
     </hint>
     <hint type="destinationlabel">
      <x>423</x>
      <y>419</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>spin_spc</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>button_spc</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>445</x>
+     <y>421</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>731</x>
+     <y>414</y>
     </hint>
    </hints>
   </connection>

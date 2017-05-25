@@ -11,6 +11,8 @@ with open(r"config\sql.txt", "r") as f:
     sentences = f.readlines()
 print(sentences)
 
+from PyQt5.QtWidgets import QApplication
+
 
 class DataBase(object):
     def __init__(self, path, table):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1050</width>
-    <height>598</height>
+    <width>610</width>
+    <height>681</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -16,14 +16,23 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="font">
+   <font>
+    <family>等线</family>
+    <pointsize>12</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>拧紧枪数据库处理</string>
+  </property>
+  <property name="locale">
+   <locale language="Chinese" country="China"/>
   </property>
   <widget class="QWidget" name="centralWidget">
    <property name="enabled">
     <bool>false</bool>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,1">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
     <property name="sizeConstraint">
      <enum>QLayout::SetNoConstraint</enum>
     </property>
@@ -34,6 +43,12 @@
         <horstretch>5</horstretch>
         <verstretch>5</verstretch>
        </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>等线</family>
+        <pointsize>12</pointsize>
+       </font>
       </property>
       <property name="currentIndex">
        <number>0</number>
@@ -61,6 +76,12 @@
          <layout class="QVBoxLayout" name="verticalLayout_4">
           <item>
            <spacer name="verticalSpacer_7">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -80,6 +101,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>拧紧枪编号</string>
             </property>
@@ -87,6 +114,12 @@
           </item>
           <item>
            <widget class="Line" name="line_9">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -94,6 +127,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_5">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>数据开始时间</string>
             </property>
@@ -101,6 +140,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>数据结束时间</string>
             </property>
@@ -108,6 +153,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_7">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>数据总数</string>
             </property>
@@ -115,6 +166,12 @@
           </item>
           <item>
            <widget class="Line" name="line_5">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -122,6 +179,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_production">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>生产量</string>
             </property>
@@ -129,6 +192,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_qualification">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>合格率</string>
             </property>
@@ -136,6 +205,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_mean">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>扭矩均值</string>
             </property>
@@ -143,6 +218,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_std">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>扭矩标准差</string>
             </property>
@@ -150,6 +231,12 @@
           </item>
           <item>
            <widget class="Line" name="line_7">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -157,6 +244,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>对比拧紧枪编号</string>
             </property>
@@ -164,6 +257,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_3">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>相关度</string>
             </property>
@@ -179,6 +278,12 @@
             <verstretch>1</verstretch>
            </sizepolicy>
           </property>
+          <property name="font">
+           <font>
+            <family>等线</family>
+            <pointsize>12</pointsize>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Vertical</enum>
           </property>
@@ -188,6 +293,12 @@
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
            <spacer name="verticalSpacer_8">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -201,6 +312,12 @@
           </item>
           <item>
            <widget class="QLabel" name="spindle">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -208,6 +325,12 @@
           </item>
           <item>
            <widget class="Line" name="line_10">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -215,6 +338,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_start">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -222,6 +351,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_end">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN </string>
             </property>
@@ -229,6 +364,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_total_num">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -236,6 +377,12 @@
           </item>
           <item>
            <widget class="Line" name="line_6">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -243,6 +390,12 @@
           </item>
           <item>
            <widget class="QLabel" name="total_production">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -250,6 +403,12 @@
           </item>
           <item>
            <widget class="QLabel" name="total_qualification">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -257,6 +416,12 @@
           </item>
           <item>
            <widget class="QLabel" name="total_mean">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -264,6 +429,12 @@
           </item>
           <item>
            <widget class="QLabel" name="total_std">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -271,6 +442,12 @@
           </item>
           <item>
            <widget class="Line" name="line_8">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -278,6 +455,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_comp_spindle_id">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -285,6 +468,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_correlation">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaN</string>
             </property>
@@ -296,6 +485,12 @@
       </item>
       <item>
        <widget class="Line" name="line">
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
@@ -309,8 +504,14 @@
           <verstretch>1</verstretch>
          </sizepolicy>
         </property>
+        <property name="font">
+         <font>
+          <family>等线</family>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="tabWidgetPage1">
          <attribute name="title">
@@ -319,6 +520,12 @@
          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,0,0,0,0,0,0,0,0,0,0,0,0,0">
           <item>
            <widget class="QLabel" name="label_current_start_time">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>当前开始时间</string>
             </property>
@@ -326,6 +533,12 @@
           </item>
           <item>
            <widget class="QLabel" name="current_start_time">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaT</string>
             </property>
@@ -333,6 +546,12 @@
           </item>
           <item>
            <spacer name="verticalSpacer_2">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -349,6 +568,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_current_end_time">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>当前结束时间</string>
             </property>
@@ -356,6 +581,12 @@
           </item>
           <item>
            <widget class="QLabel" name="current_end_time">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>NaT</string>
             </property>
@@ -364,10 +595,16 @@
           <item>
            <widget class="QPushButton" name="button_detial_time">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>显示详细图像</string>
@@ -376,6 +613,12 @@
           </item>
           <item>
            <spacer name="verticalSpacer_9">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -395,6 +638,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -402,6 +651,12 @@
           </item>
           <item>
            <spacer name="verticalSpacer_10">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="orientation">
              <enum>Qt::Vertical</enum>
             </property>
@@ -421,6 +676,12 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>开始时间</string>
             </property>
@@ -429,10 +690,16 @@
           <item>
            <widget class="QDateEdit" name="start_time">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
             </property>
             <property name="calendarPopup">
              <bool>true</bool>
@@ -441,6 +708,12 @@
           </item>
           <item>
            <widget class="QLabel" name="label_end_time">
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
             <property name="text">
              <string>结束时间</string>
             </property>
@@ -449,10 +722,16 @@
           <item>
            <widget class="QDateEdit" name="end_time">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
             </property>
             <property name="calendarPopup">
              <bool>true</bool>
@@ -462,10 +741,16 @@
           <item>
            <widget class="QPushButton" name="button_time">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
+            </property>
+            <property name="font">
+             <font>
+              <family>等线</family>
+              <pointsize>12</pointsize>
+             </font>
             </property>
             <property name="text">
              <string>刷新图像</string>
@@ -526,7 +811,7 @@
           <item>
            <widget class="QPushButton" name="button_detial_num">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -585,7 +870,7 @@
           <item>
            <widget class="QSpinBox" name="start_num">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -602,7 +887,7 @@
           <item>
            <widget class="QSpinBox" name="end_num">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -612,7 +897,7 @@
           <item>
            <widget class="QPushButton" name="button_num">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+             <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -635,25 +920,37 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1050</width>
-     <height>21</height>
+     <width>610</width>
+     <height>18</height>
     </rect>
    </property>
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
    <widget class="QMenu" name="menuFile">
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
     <property name="title">
      <string>文件</string>
     </property>
     <addaction name="actionOpen"/>
     <addaction name="actionOpenComp"/>
     <addaction name="actionSpindleFatigue"/>
+    <addaction name="separator"/>
     <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuSpindle">
-    <property name="title">
-     <string>拧紧枪</string>
-    </property>
-    <addaction name="actionChange_Spindle_ID"/>
-    <addaction name="actionAddSpindle"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
     <property name="title">
@@ -688,13 +985,21 @@
     <property name="title">
      <string>设置</string>
     </property>
-    <addaction name="actionPartNum"/>
-    <addaction name="actionDefaultReadTime"/>
-    <addaction name="actionReverseTime"/>
-    <addaction name="actionDefaultLatestNum"/>
+    <widget class="QMenu" name="menuChangeVarities">
+     <property name="title">
+      <string>调整变量</string>
+     </property>
+     <addaction name="separator"/>
+     <addaction name="actionPartNum"/>
+     <addaction name="actionDefaultLatestNum"/>
+     <addaction name="actionReverseTime"/>
+     <addaction name="actionDefaultReadTime"/>
+    </widget>
+    <addaction name="actionChange_Spindle_ID"/>
+    <addaction name="actionAddSpindle"/>
+    <addaction name="menuChangeVarities"/>
    </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuSpindle"/>
    <addaction name="menuPlot"/>
    <addaction name="menuSetting"/>
   </widget>
@@ -703,10 +1008,22 @@
    <property name="text">
     <string>打开数据库</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionExit">
    <property name="text">
     <string>退出</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionChange_Spindle_ID">
@@ -716,6 +1033,12 @@
    <property name="text">
     <string>设置拧紧枪ID</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionClear_ALL">
    <property name="enabled">
@@ -723,6 +1046,12 @@
    </property>
    <property name="text">
     <string>清除所有图像</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionClearTorque">
@@ -732,6 +1061,12 @@
    <property name="text">
     <string>清除扭矩图像</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionspc_xr">
    <property name="enabled">
@@ -739,6 +1074,12 @@
    </property>
    <property name="text">
     <string>SPC XR</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionAddSpindle">
@@ -748,45 +1089,99 @@
    <property name="text">
     <string>设置对比拧紧枪</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionPartNum">
    <property name="text">
     <string>分组数目</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionDefaultReadTime">
    <property name="text">
     <string>中断时间</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionReverseTime">
    <property name="text">
     <string>默认回溯月数</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionPlotSpecgram">
    <property name="text">
     <string>Specgram</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionPlotFFT">
    <property name="text">
     <string>FFT</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionOpenComp">
    <property name="text">
     <string>拧紧枪对比</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionDefaultLatestNum">
    <property name="text">
     <string>默认读取最新数据量</string>
    </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
+   </property>
   </action>
   <action name="actionSpindleFatigue">
    <property name="text">
     <string>疲劳监控</string>
+   </property>
+   <property name="font">
+    <font>
+     <family>等线</family>
+     <pointsize>9</pointsize>
+    </font>
    </property>
   </action>
   <action name="actionOpenMonitor">

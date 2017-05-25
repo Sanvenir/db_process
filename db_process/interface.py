@@ -11,9 +11,9 @@ from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtCore import QDate, Qt
+from PyQt5.QtCore import QDate, Qt, QThread, QTimer
 
 from db_process.ui_mainwindow import Ui_MainWindow
 from db_process.ui_datewindow import Ui_Dialog
@@ -132,7 +132,10 @@ class MainWindow(QMainWindow):
             plt.legend()
             plt.show()
         except Exception as err:
-            raise err
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText("错误:{}".format(err))
+            msg_box.exec_()
+            return
 
     def plot_detail_time(self):
         """
@@ -168,7 +171,10 @@ class MainWindow(QMainWindow):
             plt.legend()
             plt.show()
         except Exception as err:
-            raise err
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText("错误:{}".format(err))
+            msg_box.exec_()
+            return
 
     def plot_detail_num(self):
         """
@@ -198,7 +204,10 @@ class MainWindow(QMainWindow):
             plt.plot(self.data.part_date[self.current_start_num:self.current_end_num])
             plt.show()
         except Exception as err:
-            raise err
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText("错误:{}".format(err))
+            msg_box.exec_()
+            return
 
     def load_fatigue(self):
         """
@@ -272,7 +281,6 @@ class MainWindow(QMainWindow):
         if not ok:
             return
         self.time_period = [None, None]
-        DateWindow(self, self.time_period).exec()
         while True:
             import pypyodbc
             try:
@@ -294,6 +302,12 @@ class MainWindow(QMainWindow):
                 self.text_out("请等待重新输入")
                 self.time_period = [None, None]
                 DateWindow(self, self.time_period).exec()
+            except Exception as err:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setText(self.tr("错误:{}".format(err)))
+                msg_box.exec_()
+                return
+
         self.text_out("完成")
 
         self.file_name = file_name
@@ -341,6 +355,11 @@ class MainWindow(QMainWindow):
             self.text_out("请重新设定分组数，并重新打开数据库")
             self.time_period = [None, None]
             self.data = None
+        except Exception as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}".format(err)))
+            msg_box.exec_()
+            return
 
     def change_spindle_id(self):
         """
@@ -477,6 +496,11 @@ class MainWindow(QMainWindow):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
             msg_box.exec_()
+        except Exception as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}".format(err)))
+            msg_box.exec_()
+            return
 
     def plot_by_part(self):
         """
@@ -493,6 +517,11 @@ class MainWindow(QMainWindow):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
             msg_box.exec_()
+        except Exception as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}".format(err)))
+            msg_box.exec_()
+            return
 
     @staticmethod
     def series_between_time(start_time, end_time, date_list):

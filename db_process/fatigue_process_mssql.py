@@ -31,8 +31,8 @@ class FatigueDataProcess(origin.FatigueDataProcess):
         self.start_date = start_date
         assert isinstance(self.data, Series)
         self.data_mean = self.data.resample('D').mean()
-        self.data_max = self.data.resample('D').apply(self._10_percent_largest)
-        self.data_min = self.data.resample('D').apply(self._10_percent_smallest)
+        self.data_max = self.data.resample('D').apply(self._average_largest)
+        self.data_min = self.data.resample('D').apply(self._average_smallest)
         self.data_count = self.data.resample('D').apply(len)
         self.monitor = monitor
 
@@ -86,3 +86,8 @@ class FatigueDialog(origin.FatigueDialog):
             msg_box = QMessageBox()
             msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
             msg_box.exec_()
+        except Exception as err:
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setText(self.tr("错误:{}".format(err)))
+            msg_box.exec_()
+            return

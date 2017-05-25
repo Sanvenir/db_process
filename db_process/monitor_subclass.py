@@ -3,6 +3,7 @@
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import QDate
+from PyQt5 import QtWidgets, QtCore
 
 from pandas import Series
 from datetime import datetime

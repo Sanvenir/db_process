@@ -5,6 +5,8 @@ from functools import partial
 
 from PyQt5.QtCore import Qt, QDate
 from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout, QWidget, QLabel, QPushButton, QSizePolicy
+from PyQt5 import QtWidgets, QtCore
+
 from pandas import Series
 
 import matplotlib
@@ -287,6 +289,11 @@ class LoadDialog(SelectDialog):
             msg_box = QMessageBox()
             msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
             msg_box.exec_()
+        except Exception as err:
+            msg_box = QMessageBox()
+            msg_box.setText("错误:{}".format(err))
+            msg_box.exec_()
+            return
         finally:
             self.setEnabled(True)
 

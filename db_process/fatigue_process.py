@@ -6,6 +6,7 @@ from pandas import Series
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QMessageBox, QInputDialog
 from PyQt5.QtCore import Qt
+from PyQt5 import QtWidgets, QtCore
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -32,8 +33,8 @@ class FatigueDataProcess(object):
         self.start_date = start_date
         assert isinstance(self.data, Series)
         self.data_mean = self.data.resample('D').mean()
-        self.data_max = self.data.resample('D').apply(self._10_percent_largest)
-        self.data_min = self.data.resample('D').apply(self._10_percent_smallest)
+        self.data_max = self.data.resample('D').apply(self._average_largest)
+        self.data_min = self.data.resample('D').apply(self._average_smallest)
         self.data_count = self.data.resample('D').apply(len)
         self.monitor = monitor
 
@@ -43,11 +44,11 @@ class FatigueDataProcess(object):
         tau_m = self.data_mean / wp
         tau_ln = 202110000
         tau_b = 648000000
-        tau_r = tau_ln * (1 - tau_m / tau_b)
+        tau_r = tau_ln * (1 - (tau_m / tau_b))
         tau_a = (self.data_max - self.data_min) / wp
 
-        nf = 378000000 * 1 / (4 * (1 / 2 / (1 - r)) * tau_a.combine(tau_r, self._combine_func) ** 2)
-
+        nf = 378000000 / ((2 / (1 - r)) * (tau_a.combine(tau_r, self._combine_func) ** 2)) * 1000000000000
+        print(nf)
         di = 3.5 * self.data_count / nf
 
         if self.monitor:
@@ -71,16 +72,16 @@ class FatigueDataProcess(object):
         return 0.
 
     @staticmethod
-    def _10_percent_largest(array_like):
+    def _average_largest(array_like):
         if array_like.empty:
             return inf
-        return array_like.nlargest(len(array_like) // 10).min()
+        return array_like.nlargest(len(array_like) // 10).mean()
 
     @staticmethod
-    def _10_percent_smallest(array_like):
+    def _average_smallest(array_like):
         if array_like.empty:
             return 0
-        return array_like.nsmallest(len(array_like) // 10).max()
+        return array_like.nsmallest(len(array_like) // 10).mean()
 
 
 class FatigueDialog(QDialog):
@@ -123,11 +124,12 @@ class FatigueDialog(QDialog):
             else:
                 self.data_process = FatigueDataProcess(self.database, spindle_id, start_date, monitor=self.monitor)
             fatigue = self.data_process.get_fatigue()
-            self.ax_fatigue.plot(fatigue.cumsum())
+            self.ax_fatigue.plot(fatigue.cumsum() / 0.68 * 100)
+            self.ax_fatigue.hlines(100, fatigue.first_valid_index(), fatigue.last_valid_index(), color="red")
             self.text_out("完成")
             self.figure_canvas.draw()
             assert isinstance(fatigue, Series)
-            self.ui.labelCurrentFatigue.setNum(fatigue[-1])
+            self.ui.labelCurrentFatigue.setText("{:<.2f} %".format(fatigue.cumsum()[-1] / 0.68 * 100))
         except pypyodbc.Error as err:
             msg_box = QMessageBox()
             msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))
@@ -136,3 +138,8 @@ class FatigueDialog(QDialog):
             table_name, ok = QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
             if ok:
                 self.database.table = table_name
+        except Exception as err:
+            msg_box = QMessageBox()
+            msg_box.setText(self.tr("错误:{}".format(err)))
+            msg_box.exec_()
+            return

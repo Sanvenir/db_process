@@ -6,7 +6,7 @@ matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets, QtCore
 
 from pandas import Series
 
@@ -56,8 +56,8 @@ class SPCWindow(QtWidgets.QMainWindow):
         刷新控件值
         :return: 
         """
-        self.ui.slider_spc.setMaximum(len(self.spc_series) - self.ui.spin_range.value())
-        self.ui.spin_spc.setMaximum(len(self.spc_series) - self.ui.spin_range.value())
+        self.ui.slider_spc.setMaximum(len(self.spc_series) - self.ui.spin_range.value() - 1)
+        self.ui.spin_spc.setMaximum(len(self.spc_series) - self.ui.spin_range.value() - 1)
         self.ui.total_part.setNum(len(self.spc_series))
 
     def plot_spc(self):
@@ -65,14 +65,89 @@ class SPCWindow(QtWidgets.QMainWindow):
         start = self.ui.spin_spc.value()
         end = self.ui.spin_spc.value() + self.ui.spin_range.value()
         ran = self.spc_range_series[start:end].mean() * 0.212
+
+        cl = self.spc_mean_series[start:end].mean()
+        ucl1 = cl + ran / 3
+        ucl2 = cl + ran / 3 * 2
+        ucl3 = cl + ran
+        lcl1 = cl - ran / 3
+        lcl2 = cl - ran / 3 * 2
+        lcl3 = cl - ran
+
         self.ax_spc.plot(self.spc_mean_series[start:end])
         self.ax_spc.scatter(range(start, end), self.spc_mean_series[start:end])
-        self.ax_spc.hlines(self.spc_mean_series[start:end].mean(), start, end)
-        self.ax_spc.hlines(self.spc_mean_series[start:end].mean() + ran, start, end)
-        self.ax_spc.hlines(self.spc_mean_series[start:end].mean() - ran, start, end)
+        self.ax_spc.hlines(cl, start, end)
+        self.ax_spc.hlines(ucl1, start, end, color="green")
+        self.ax_spc.hlines(lcl1, start, end, color="green")
+        self.ax_spc.hlines(ucl2, start, end, color="orange")
+        self.ax_spc.hlines(lcl2, start, end, color="orange")
+        self.ax_spc.hlines(ucl3, start, end, color="red")
+        self.ax_spc.hlines(lcl3, start, end, color="red")
         self.figure_canvas.draw()
         self.ui.statusbar.showMessage("当前分析点时间范围：{} - {}".format(self.spc_date[start][0],
                                                                  self.spc_date[end][1]))
+
+        # 判断SPC状态
+        # 是否为“有点过界”
+        for i in range(start, end):
+            if self.spc_mean_series[i] > ucl3 or self.spc_mean_series[i] < lcl3:
+                self.ui.label_type.setText("有点过界")
+                return
+
+        # 是否为“倾向”
+        for i in range(start + 1, end - 6):
+            if self.spc_mean_series[i] == self.spc_mean_series[i - 1]:
+                continue
+            position = (self.spc_mean_series[i] > self.spc_mean_series[i - 1])
+            for j in range(6):
+                if self.spc_mean_series[i + j] == self.spc_mean_series[i + j - 1] or\
+                                position != (self.spc_mean_series[i + j] > self.spc_mean_series[i + j - 1]):
+                    break
+            else:
+                if position:
+                    self.ui.label_type.setText("有上行倾向")
+                else:
+                    self.ui.label_type.setText("有下行倾向")
+                return
+
+        # 是否为“间断链”
+        check_list = [(11, 10), (14, 12), (17, 14), (20, 16)]
+        for check_num, check_count in check_list:
+            for i in range(start, end - check_num):
+                u_over_count = 0
+                l_over_count = 0
+                for j in range(check_num):
+                    if self.spc_mean_series[i + j] > cl:
+                        u_over_count += 1
+                    if self.spc_mean_series[i + j] < cl:
+                        l_over_count += 1
+                if u_over_count > check_count or l_over_count > check_count:
+                    self.ui.label_type.setText("间断链")
+                    return
+
+        # 是否为链异常
+        for i in range(start, end - 9):
+            if self.spc_mean_series[i] == cl:
+                continue
+            position = (self.spc_mean_series[i] > cl)
+            for j in range(9):
+                if position != (self.spc_mean_series[i + j] > cl) or self.spc_mean_series[i + j] == cl:
+                    break
+            else:
+                self.ui.label_type.setText("链异常")
+                return
+
+        # 是否为“点屡屡接近控制线”
+        for i in range(start, end - 3):
+            over_count = 0
+            for j in range(3):
+                if self.spc_mean_series[i + j] > ucl2 or self.spc_mean_series[i + j] < lcl2:
+                    over_count += 1
+            if over_count > 1:
+                self.ui.label_type.setText("点屡屡接近控制线")
+                return
+
+        self.ui.label_type.setText("正常")
 
     def show_detail(self):
         start = self.ui.spin_spc.value()
@@ -94,4 +169,3 @@ class SPCWindow(QtWidgets.QMainWindow):
             spc_series.append(total_normal_data[current_part:current_part + 16])
             current_part += 16
         return spc_series
-

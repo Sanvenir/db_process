@@ -30,6 +30,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <family>等线</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>按时间绘图</string>
        </property>
@@ -46,6 +52,12 @@
          <verstretch>0</verstretch>
         </sizepolicy>
        </property>
+       <property name="font">
+        <font>
+         <family>等线</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="text">
         <string>按序号绘图</string>
        </property>
@@ -53,6 +65,12 @@
      </item>
      <item>
       <widget class="Line" name="line">
+       <property name="font">
+        <font>
+         <family>等线</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -60,6 +78,12 @@
      </item>
      <item>
       <widget class="QGroupBox" name="groupBoxQualification">
+       <property name="font">
+        <font>
+         <family>等线</family>
+         <pointsize>12</pointsize>
+        </font>
+       </property>
        <property name="title">
         <string>合格率</string>
        </property>
@@ -69,6 +93,12 @@
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
+     <property name="font">
+      <font>
+       <family>等线</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
      <property name="currentIndex">
       <number>0</number>
      </property>
