@@ -16,4 +16,5 @@ class MyFigureCanvas(FigureCanvas):
 
     def mouseDoubleClickEvent(self, event):
         super().mouseDoubleClickEvent(event)
-        self.mouse_double_click_func()
+        if self.mouse_double_click_func:
+            self.mouse_double_click_func()

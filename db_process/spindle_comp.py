@@ -64,9 +64,6 @@ class CompWidget(QWidget):
         self.start_time = None
         self.end_time = None
 
-        self.setGeometry(self.parent().x() + self.parent().width() + 10, self.parent().y() + 55,
-                         1000, self.parent().rect().height())
-
         self.torque_figure = Figure()
         self.ax_torque_comp = self.torque_figure.add_subplot(111)
         self.figure_canvas = MyFigureCanvas(self.torque_figure)
@@ -107,7 +104,31 @@ class CompWidget(QWidget):
         self.ui.groupBoxSpindleID.setLayout(layout_spindle)
 
         self.figure_canvas.set_mouse_double_click(self.plot_detail)
+
+        # Part of QS Static
+        self.buttons_QS = {index: QPushButton() for index in self.parent().comp_data_process.data.keys()}
+        layout_qs_button = QVBoxLayout()
+        for key in self.parent().comp_data_process.data.keys():
+            layout_qs_button.addWidget(self.buttons_QS[key])
+            self.buttons_QS[key].setText("{}号枪".format(key))
+            self.buttons_QS[key].clicked.connect(partial(self.plot_static, key))
+        self.ui.groupBoxQSButton.setLayout(layout_qs_button)
+
+        self.qs_static_figure = Figure()
+        self.ax_qs_static = self.qs_static_figure.add_subplot(111)
+        self.qs_figure_canvas = MyFigureCanvas(self.qs_static_figure)
+        self.ui.verticalLayoutStaticFigure.addWidget(self.qs_figure_canvas)
+
         self.display_update()
+        self.check_static()
+
+    def plot_static(self, spindle_id):
+        self.ax_qs_static.clear()
+        data = self.parent().comp_data_process.data[spindle_id].total_data
+        assert isinstance(data, Series)
+        self.ax_qs_static.pie(data[self.start_time:self.end_time].value_counts(), )
+        self.qs_figure_canvas.draw()
+        pass
 
     def plot_hist(self, spindle_id):
         plt.close()
@@ -115,6 +136,28 @@ class CompWidget(QWidget):
         plt.hist(self.parent().comp_data_process.data[spindle_id].total_normal_data[self.start_time:self.end_time],
                  np.arange(12., 25., 0.2), histtype="stepfilled")
         plt.show()
+
+    def check_static(self):
+        data = self.parent().comp_data_process.data
+        result = ""
+        for spindle_id in range(1, 23):
+            if spindle_id not in data.keys():
+                self.ui.textBrowserStatic.setText("未获取所有拧紧枪数据")
+                return
+            value_counts = data[spindle_id].total_data.value_counts()
+            for key in cf.qs_count.keys():
+                if key in value_counts.keys():
+                    cf.qs_count[key] += value_counts[key]
+        for key, count in cf.qs_count.items():
+            if count > 5:
+                if result:
+                    result += "；\n"
+                result += cf.qs_result[key]
+        if result:
+            result += "。"
+        else:
+            result = "正常。"
+        self.ui.textBrowserStatic.setText(result)
 
     def display_update(self):
         # update numbers
