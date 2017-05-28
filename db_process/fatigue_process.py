@@ -37,6 +37,7 @@ class FatigueDataProcess(object):
         self.data_min = self.data.resample('D').apply(self._average_smallest)
         self.data_count = self.data.resample('D').apply(len)
         self.monitor = monitor
+        self.spindle_id = spindle_id
 
     def get_fatigue(self):
         r = self.data_min / self.data_max
@@ -54,16 +55,17 @@ class FatigueDataProcess(object):
         if self.monitor:
             import pickle, os
             di_series = Series()
-            if os.path.isfile(r"sav\fatigue.dat"):
-                with open(r"sav\fatigue.dat", "rb") as f:
+            file_name = r"sav\fatigue_{}.dat".format(self.spindle_id)
+            if os.path.isfile(file_name):
+                with open(file_name, "rb") as f:
                     di_series = pickle.load(f)
             for index, value in di.dropna().items():
                 di_series[index] = value
-            with open(r"sav\fatigue.dat", "wb") as f:
+            with open(file_name, "wb") as f:
                 pickle.dump(di_series, f)
         else:
             di_series = di.dropna()
-        return di_series[self.start_date:]
+        return di_series[self.start_date:], tau_m[-1], nf[-1], di[-1]
 
     @staticmethod
     def _combine_func(tau_a, tau_r):
@@ -111,6 +113,8 @@ class FatigueDialog(QDialog):
         self.database = FatigueDataBase(path, table, self.text_out)
 
         self.ui.pushButtonUpdate.clicked.connect(self.update_fatigue)
+
+        self.setWindowState(Qt.WindowMaximized)
         self.show()
 
     def update_fatigue(self):
@@ -123,13 +127,16 @@ class FatigueDialog(QDialog):
                 self.data_process.start_date = start_date
             else:
                 self.data_process = FatigueDataProcess(self.database, spindle_id, start_date, monitor=self.monitor)
-            fatigue = self.data_process.get_fatigue()
+            fatigue, tau_m, df, ni = self.data_process.get_fatigue()
             self.ax_fatigue.plot(fatigue.cumsum() / 0.68 * 100)
             self.ax_fatigue.hlines(100, fatigue.first_valid_index(), fatigue.last_valid_index(), color="red")
             self.text_out("完成")
             self.figure_canvas.draw()
             assert isinstance(fatigue, Series)
             self.ui.labelCurrentFatigue.setText("{:<.2f} %".format(fatigue.cumsum()[-1] / 0.68 * 100))
+            self.ui.label_torque_mean.setText("{:<.2f} MPa".format(tau_m / 1000000))
+            self.ui.label_df.setText("{} 日".format(df))
+            self.ui.label_ni.setText("{:<.2f}".format(ni))
         except pypyodbc.Error as err:
             msg_box = QMessageBox()
             msg_box.setText(self.tr("错误:{}\n可能为数据表名称错误，请重新输入".format(err)))

@@ -6,6 +6,7 @@ from pandas import Series
 
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QMessageBox
 from PyQt5.QtCore import Qt
+from PyQt5 import QtCore, QtWidgets
 
 import matplotlib
 matplotlib.use('Qt5Agg')
@@ -64,6 +65,7 @@ class FatigueDialog(origin.FatigueDialog):
         self.database = FatigueDataBase(self.text_out)
 
         self.ui.pushButtonUpdate.clicked.connect(self.update_fatigue)
+        self.setWindowState(Qt.WindowMaximized)
         self.show()
 
     def update_fatigue(self):

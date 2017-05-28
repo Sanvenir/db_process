@@ -93,8 +93,6 @@ class MainWindow(QMainWindow):
         self.ui.actionDefaultLatestNum.triggered.connect(self.set_default_latest_num)
         self.ui.actionPlotSpecgram.triggered.connect(self.plot_specgram)
         self.ui.actionPlotFFT.triggered.connect(self.plot_fft)
-        self.ui.actionOpenComp.triggered.connect(self.load_comp)
-        self.ui.actionSpindleFatigue.triggered.connect(self.load_fatigue)
 
         # 生产量信息图表，包括生产量子图和生产合格率子图
         self.figure_production = Figure()
@@ -116,6 +114,7 @@ class MainWindow(QMainWindow):
         layout_figure = QtWidgets.QVBoxLayout()
         layout_figure.addWidget(self.figure_canvas_torque)
         self.ui.figure_torque.setLayout(layout_figure)
+        self.setWindowState(Qt.WindowMaximized)
 
         self.show()
 
@@ -203,49 +202,6 @@ class MainWindow(QMainWindow):
             plt.subplot(212)
             plt.plot(self.data.part_date[self.current_start_num:self.current_end_num])
             plt.show()
-        except Exception as err:
-            msg_box = QtWidgets.QMessageBox()
-            msg_box.setText(self.tr("错误:{}".format(err)))
-            msg_box.exec_()
-            return
-
-    def load_fatigue(self):
-        """
-        开启疲劳计算模块
-        :return: 
-        """
-        import pymssql
-        from db_process.fatigue_process_mssql import FatigueDialog
-        try:
-            self.fatigue_dialog = FatigueDialog(text_out=self.text_out, monitor=True)
-            return True
-        except pymssql.Error as err:
-            msg_box = QtWidgets.QMessageBox()
-            msg_box.setText(self.tr("错误:{}\n请检查数据库".format(err)))
-            msg_box.exec_()
-        except Exception as err:
-            msg_box = QtWidgets.QMessageBox()
-            msg_box.setText(self.tr("错误:{}".format(err)))
-            msg_box.exec_()
-            return
-
-    def load_comp(self):
-        """
-        读取数据库以对比拧紧枪
-        :return: 
-        """
-        import pymssql
-        from db_process.spindle_comp_mssql import SelectDialog
-        try:
-            self.select_dialog = SelectDialog(text_out=self.text_out)
-            self.select_dialog.show()
-            self.select_dialog.ui.checkBoxAllData.setChecked(True)
-            self.select_dialog.accept()
-            return True
-        except pymssql.Error as err:
-            msg_box = QtWidgets.QMessageBox()
-            msg_box.setText(self.tr("错误:{}\n请检查数据库".format(err)))
-            msg_box.exec_()
         except Exception as err:
             msg_box = QtWidgets.QMessageBox()
             msg_box.setText(self.tr("错误:{}".format(err)))

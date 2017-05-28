@@ -237,6 +237,7 @@ class SelectDialog(QDialog):
             QDate.fromString(str(self.comp_data_process.end_date.date()), "yyyy-MM-dd"))
         self.ui.dateEditEnd.setDate(
             QDate.fromString(str(self.comp_data_process.end_date.date()), "yyyy-MM-dd"))
+        self.setWindowState(Qt.WindowMaximized)
 
     def reverse_state(self):
         self._state = LoadDialog

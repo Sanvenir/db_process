@@ -93,8 +93,6 @@ class MainWindow(QMainWindow):
         self.ui.actionDefaultLatestNum.triggered.connect(self.set_default_latest_num)
         self.ui.actionPlotSpecgram.triggered.connect(self.plot_specgram)
         self.ui.actionPlotFFT.triggered.connect(self.plot_fft)
-        self.ui.actionOpenComp.triggered.connect(self.load_comp)
-        self.ui.actionSpindleFatigue.triggered.connect(self.load_fatigue)
 
         # 生产量信息图表，包括生产量子图和生产合格率子图
         self.figure_production = Figure()
@@ -273,13 +271,13 @@ class MainWindow(QMainWindow):
         file_name, ok = QtWidgets.QFileDialog.getOpenFileName(
             self, caption=self.tr("打开数据库"), filter=self.tr("Database Files (*.accdb)"))
         if not ok:
-            return
+            return False
         table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
         if not (ok and table_name):
-            return
+            return False
         spindle_id, ok = QtWidgets.QInputDialog.getInt(self, self.tr("请输入"), self.tr("查询枪号"), 1, 1, 22)
         if not ok:
-            return
+            return False
         self.time_period = [None, None]
         while True:
             import pypyodbc
@@ -294,7 +292,7 @@ class MainWindow(QMainWindow):
                 self.text_out("请等待重新输入")
                 table_name, ok = QtWidgets.QInputDialog.getText(self, self.tr("请输入"), self.tr("表名"))
                 if not (ok and table_name):
-                    return
+                    return False
             except IndexError as err:
                 msg_box = QtWidgets.QMessageBox()
                 msg_box.setText(self.tr("错误:{}\n本段时间内数据量可能为空，请重新输入".format(err)))
@@ -306,7 +304,7 @@ class MainWindow(QMainWindow):
                 msg_box = QtWidgets.QMessageBox()
                 msg_box.setText(self.tr("错误:{}".format(err)))
                 msg_box.exec_()
-                return
+                return False
 
         self.text_out("完成")
 
@@ -359,7 +357,9 @@ class MainWindow(QMainWindow):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setText(self.tr("错误:{}".format(err)))
             msg_box.exec_()
-            return
+            return False
+
+        return True
 
     def change_spindle_id(self):
         """

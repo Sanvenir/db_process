@@ -372,7 +372,7 @@ class Ui_Dialog(object):
 
     def retranslateUi(self, Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        Dialog.setWindowTitle(_translate("Dialog", "多拧紧枪数据分析"))
         self.groupBox.setTitle(_translate("Dialog", "拧紧枪选择"))
         self.checkBoxS1.setText(_translate("Dialog", "1号枪"))
         self.checkBoxS2.setText(_translate("Dialog", "2号枪"))

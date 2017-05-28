@@ -39,6 +39,7 @@ class SPCWindow(QtWidgets.QMainWindow):
         self.ui.figure_layout.addWidget(self.figure_canvas)
 
         self.refresh_button()
+        self.setWindowState(Qt.WindowMaximized)
 
         self.show()
 

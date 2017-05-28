@@ -187,7 +187,7 @@ class Ui_SPCWindow(object):
 
     def retranslateUi(self, SPCWindow):
         _translate = QtCore.QCoreApplication.translate
-        SPCWindow.setWindowTitle(_translate("SPCWindow", "SPC图"))
+        SPCWindow.setWindowTitle(_translate("SPCWindow", "SPC分析"))
         self.label_type.setText(_translate("SPCWindow", "正常"))
         self.label_2.setText(_translate("SPCWindow", "SPC组数设置"))
         self.label_4.setText(_translate("SPCWindow", "分析长度："))

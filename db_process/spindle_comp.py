@@ -133,6 +133,7 @@ class CompWidget(QWidget):
         self.display_update()
         self.check_static()
         self.plot_static_total()
+        self.parent().setWindowState(Qt.WindowMaximized)
 
     def plot_static_total(self):
         self.ax_qs_static.clear()
@@ -365,7 +366,16 @@ class SelectDialog(QDialog):
             button.setEnabled(True)
 
     def accept(self):
-        self._state.accept(self)
+        for button in self.ui.buttonGroup.buttons():
+            if button.isChecked() and button.isEnabled():
+                self._state.accept(self)
+                return
+        else:
+            msg_box = QMessageBox()
+            msg_box.setText("请至少选取一把拧紧枪")
+            msg_box.exec_()
+            return
+
 
 
 class LoadDialog(SelectDialog):
