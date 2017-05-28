@@ -32,39 +32,10 @@
    <property name="enabled">
     <bool>false</bool>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,1">
+   <layout class="QHBoxLayout" name="horizontalLayout" stretch="0,0">
     <property name="sizeConstraint">
      <enum>QLayout::SetNoConstraint</enum>
     </property>
-    <item>
-     <widget class="QTabWidget" name="figure">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-        <horstretch>5</horstretch>
-        <verstretch>5</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="font">
-       <font>
-        <family>等线</family>
-        <pointsize>12</pointsize>
-       </font>
-      </property>
-      <property name="currentIndex">
-       <number>0</number>
-      </property>
-      <widget class="QWidget" name="figure_production">
-       <attribute name="title">
-        <string>生产统计数据</string>
-       </attribute>
-      </widget>
-      <widget class="QWidget" name="figure_torque">
-       <attribute name="title">
-        <string>扭矩统计数据</string>
-       </attribute>
-      </widget>
-     </widget>
-    </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0">
       <property name="sizeConstraint">
@@ -78,7 +49,7 @@
            <spacer name="verticalSpacer_7">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -103,7 +74,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -116,7 +87,7 @@
            <widget class="Line" name="line_9">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -129,7 +100,7 @@
            <widget class="QLabel" name="label_5">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -142,7 +113,7 @@
            <widget class="QLabel" name="label_6">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -155,7 +126,7 @@
            <widget class="QLabel" name="label_7">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -168,7 +139,7 @@
            <widget class="Line" name="line_5">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -181,7 +152,7 @@
            <widget class="QLabel" name="label_total_production">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -194,7 +165,7 @@
            <widget class="QLabel" name="label_total_qualification">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -207,7 +178,7 @@
            <widget class="QLabel" name="label_total_mean">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -220,7 +191,7 @@
            <widget class="QLabel" name="label_total_std">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -233,7 +204,7 @@
            <widget class="Line" name="line_7">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -246,7 +217,7 @@
            <widget class="QLabel" name="label">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -259,7 +230,7 @@
            <widget class="QLabel" name="label_3">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -280,7 +251,7 @@
           </property>
           <property name="font">
            <font>
-            <family>等线</family>
+            <family>黑体</family>
             <pointsize>12</pointsize>
            </font>
           </property>
@@ -295,7 +266,7 @@
            <spacer name="verticalSpacer_8">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -314,7 +285,7 @@
            <widget class="QLabel" name="spindle">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -327,7 +298,7 @@
            <widget class="Line" name="line_10">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -340,7 +311,7 @@
            <widget class="QLabel" name="label_total_start">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -353,7 +324,7 @@
            <widget class="QLabel" name="label_total_end">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -366,7 +337,7 @@
            <widget class="QLabel" name="label_total_num">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -379,7 +350,7 @@
            <widget class="Line" name="line_6">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -392,7 +363,7 @@
            <widget class="QLabel" name="total_production">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -405,7 +376,7 @@
            <widget class="QLabel" name="total_qualification">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -418,7 +389,7 @@
            <widget class="QLabel" name="total_mean">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -431,7 +402,7 @@
            <widget class="QLabel" name="total_std">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -444,7 +415,7 @@
            <widget class="Line" name="line_8">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -457,7 +428,7 @@
            <widget class="QLabel" name="label_comp_spindle_id">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -470,7 +441,7 @@
            <widget class="QLabel" name="label_correlation">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -487,7 +458,7 @@
        <widget class="Line" name="line">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -506,7 +477,7 @@
         </property>
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -522,7 +493,7 @@
            <widget class="QLabel" name="label_current_start_time">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -535,7 +506,7 @@
            <widget class="QLabel" name="current_start_time">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -548,7 +519,7 @@
            <spacer name="verticalSpacer_2">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -570,7 +541,7 @@
            <widget class="QLabel" name="label_current_end_time">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -583,7 +554,7 @@
            <widget class="QLabel" name="current_end_time">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -602,7 +573,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -615,7 +586,7 @@
            <spacer name="verticalSpacer_9">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -640,7 +611,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -653,7 +624,7 @@
            <spacer name="verticalSpacer_10">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -678,7 +649,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -697,7 +668,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -710,7 +681,7 @@
            <widget class="QLabel" name="label_end_time">
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -729,7 +700,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -748,7 +719,7 @@
             </property>
             <property name="font">
              <font>
-              <family>等线</family>
+              <family>黑体</family>
               <pointsize>12</pointsize>
              </font>
             </property>
@@ -913,6 +884,35 @@
       </item>
      </layout>
     </item>
+    <item>
+     <widget class="QTabWidget" name="figure">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>5</horstretch>
+        <verstretch>5</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="font">
+       <font>
+        <family>黑体</family>
+        <pointsize>12</pointsize>
+       </font>
+      </property>
+      <property name="currentIndex">
+       <number>1</number>
+      </property>
+      <widget class="QWidget" name="figure_production">
+       <attribute name="title">
+        <string>生产统计数据</string>
+       </attribute>
+      </widget>
+      <widget class="QWidget" name="figure_torque">
+       <attribute name="title">
+        <string>扭矩统计数据</string>
+       </attribute>
+      </widget>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
@@ -921,7 +921,7 @@
      <x>0</x>
      <y>0</y>
      <width>879</width>
-     <height>18</height>
+     <height>17</height>
     </rect>
    </property>
    <property name="sizePolicy">
@@ -932,7 +932,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -942,6 +942,11 @@
       <horstretch>0</horstretch>
       <verstretch>0</verstretch>
      </sizepolicy>
+    </property>
+    <property name="font">
+     <font>
+      <family>黑体</family>
+     </font>
     </property>
     <property name="title">
      <string>文件</string>
@@ -953,12 +958,22 @@
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuPlot">
+    <property name="font">
+     <font>
+      <family>黑体</family>
+     </font>
+    </property>
     <property name="title">
      <string>图像</string>
     </property>
     <widget class="QMenu" name="menuspc_figure">
      <property name="enabled">
       <bool>false</bool>
+     </property>
+     <property name="font">
+      <font>
+       <family>黑体</family>
+      </font>
      </property>
      <property name="title">
       <string>绘制SPC图</string>
@@ -968,6 +983,11 @@
     <widget class="QMenu" name="menuPlotFrequence">
      <property name="enabled">
       <bool>false</bool>
+     </property>
+     <property name="font">
+      <font>
+       <family>黑体</family>
+      </font>
      </property>
      <property name="title">
       <string>频域分析</string>
@@ -982,13 +1002,18 @@
     <addaction name="menuPlotFrequence"/>
    </widget>
    <widget class="QMenu" name="menuSetting">
+    <property name="font">
+     <font>
+      <family>黑体</family>
+     </font>
+    </property>
     <property name="title">
      <string>设置</string>
     </property>
     <widget class="QMenu" name="menuChangeVarities">
      <property name="font">
       <font>
-       <family>等线</family>
+       <family>黑体</family>
       </font>
      </property>
      <property name="title">
@@ -1008,14 +1033,20 @@
    <addaction name="menuPlot"/>
    <addaction name="menuSetting"/>
   </widget>
-  <widget class="QStatusBar" name="statusBar"/>
+  <widget class="QStatusBar" name="statusBar">
+   <property name="font">
+    <font>
+     <family>黑体</family>
+    </font>
+   </property>
+  </widget>
   <action name="actionOpen">
    <property name="text">
     <string>打开数据库</string>
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1026,7 +1057,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1040,7 +1071,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1054,7 +1085,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1068,7 +1099,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1082,7 +1113,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1096,7 +1127,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1107,7 +1138,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1118,7 +1149,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1129,7 +1160,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1140,7 +1171,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1151,7 +1182,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1162,7 +1193,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1173,7 +1204,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1184,7 +1215,7 @@
    </property>
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>9</pointsize>
     </font>
    </property>
@@ -1216,7 +1247,6 @@
  <tabstops>
   <tabstop>start_num</tabstop>
   <tabstop>end_time</tabstop>
-  <tabstop>figure</tabstop>
   <tabstop>end_num</tabstop>
   <tabstop>start_time</tabstop>
   <tabstop>button_time</tabstop>

@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 
 from functools import partial
+from collections import defaultdict
 
 from PyQt5.QtCore import Qt, QDate
-from PyQt5.QtWidgets import QDialog, QApplication, QMessageBox, QVBoxLayout, QWidget, QLabel, QPushButton, QSizePolicy
+from PyQt5.QtWidgets import QDialog, QMessageBox, QVBoxLayout, QWidget, QLabel, QPushButton, QSizePolicy, \
+    QTableWidgetItem
 from PyQt5 import QtWidgets, QtCore
 
 from pandas import Series
@@ -13,6 +15,9 @@ import matplotlib
 matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
+from matplotlib import rcParams
+rcParams['font.sans-serif'] = ['SimHei']
+rcParams['font.family'] = 'sans-serif'
 
 import numpy as np
 
@@ -106,8 +111,12 @@ class CompWidget(QWidget):
         self.figure_canvas.set_mouse_double_click(self.plot_detail)
 
         # Part of QS Static
+        self.button_total_QS = QPushButton()
+        self.button_total_QS.setText("全部数据")
+        self.button_total_QS.clicked.connect(self.plot_static_total)
         self.buttons_QS = {index: QPushButton() for index in self.parent().comp_data_process.data.keys()}
         layout_qs_button = QVBoxLayout()
+        layout_qs_button.addWidget(self.button_total_QS)
         for key in self.parent().comp_data_process.data.keys():
             layout_qs_button.addWidget(self.buttons_QS[key])
             self.buttons_QS[key].setText("{}号枪".format(key))
@@ -119,14 +128,73 @@ class CompWidget(QWidget):
         self.qs_figure_canvas = MyFigureCanvas(self.qs_static_figure)
         self.ui.verticalLayoutStaticFigure.addWidget(self.qs_figure_canvas)
 
+        self.ui.tableWidgetQSStatic.setColumnWidth(1, 600)
+
         self.display_update()
         self.check_static()
+        self.plot_static_total()
+
+    def plot_static_total(self):
+        self.ax_qs_static.clear()
+        total_data = defaultdict(int)
+        for spindle_id in range(1, 23):
+            if spindle_id not in self.parent().comp_data_process.data.keys():
+                msg_box = QMessageBox()
+                msg_box.setText(self.tr("只有读取所有拧紧枪数据之后才可做综合分析"))
+                msg_box.exec_()
+                return
+            data = self.parent().comp_data_process.data[spindle_id].total_data[
+                   self.start_time:self.end_time].value_counts()
+            for key in data.keys():
+                total_data[key] += data[key]
+        data = Series(total_data)
+
+        self.ui.tableWidgetQSStatic.clearContents()
+        i = 0
+        for key in data.keys():
+            self.ui.tableWidgetQSStatic.setItem(i, 0, QTableWidgetItem("{}".format(key)))
+            self.ui.tableWidgetQSStatic.setItem(i, 1, QTableWidgetItem(cf.qs_describe[key]))
+            self.ui.tableWidgetQSStatic.setItem(i, 2, QTableWidgetItem("{}".format(data[key])))
+            self.ui.tableWidgetQSStatic.setItem(i, 3, QTableWidgetItem("{:<.2f}%".format(data[key] / data.sum() * 100)))
+            i += 1
+
+        labels = []
+        sizes = []
+        explode = []
+
+        for key in data.keys():
+            if key != 1:
+                labels.append(cf.qs_describe[key])
+                sizes.append(data[key])
+                explode.append(0.1)
+        self.ax_qs_static.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+        self.ax_qs_static.axis("equal")
+        self.qs_figure_canvas.draw()
 
     def plot_static(self, spindle_id):
         self.ax_qs_static.clear()
-        data = self.parent().comp_data_process.data[spindle_id].total_data
-        assert isinstance(data, Series)
-        self.ax_qs_static.pie(data[self.start_time:self.end_time].value_counts(), )
+        data = self.parent().comp_data_process.data[spindle_id].total_data[self.start_time:self.end_time].value_counts()
+
+        self.ui.tableWidgetQSStatic.clearContents()
+        i = 0
+        for key in data.keys():
+            self.ui.tableWidgetQSStatic.setItem(i, 0, QTableWidgetItem("{}".format(key)))
+            self.ui.tableWidgetQSStatic.setItem(i, 1, QTableWidgetItem(cf.qs_describe[key]))
+            self.ui.tableWidgetQSStatic.setItem(i, 2, QTableWidgetItem("{}".format(data[key])))
+            self.ui.tableWidgetQSStatic.setItem(i, 3, QTableWidgetItem("{:<.2f}%".format(data[key] / data.sum() * 100)))
+            i += 1
+
+        labels = []
+        sizes = []
+        explode = []
+
+        for key in data.keys():
+            if key != 1:
+                labels.append(cf.qs_describe[key])
+                sizes.append(data[key])
+                explode.append(0.1)
+        self.ax_qs_static.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%', shadow=True, startangle=90)
+        self.ax_qs_static.axis("equal")
         self.qs_figure_canvas.draw()
         pass
 
@@ -330,11 +398,11 @@ class LoadDialog(SelectDialog):
             self.ui.horizontalLayout.addWidget(self.comp_dialog)
         except IndexError as err:
             msg_box = QMessageBox()
-            msg_box.setText(self.tr("错误:{}\n请重新输入".format(err)))
+            msg_box.setText(self.tr("错误: {}\n请重新输入".format(err)))
             msg_box.exec_()
         except Exception as err:
             msg_box = QMessageBox()
-            msg_box.setText("错误:{}".format(err))
+            msg_box.setText("错误: {}".format(err))
             msg_box.exec_()
             return
         finally:

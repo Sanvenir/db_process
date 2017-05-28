@@ -35,7 +35,7 @@
       </property>
       <property name="font">
        <font>
-        <family>等线</family>
+        <family>黑体</family>
         <pointsize>12</pointsize>
        </font>
       </property>
@@ -59,7 +59,7 @@
         </property>
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -72,7 +72,7 @@
        <widget class="QSlider" name="slider_spc">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -98,7 +98,7 @@
         </property>
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -114,7 +114,7 @@
        <widget class="QSpinBox" name="spin_range">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -133,7 +133,7 @@
        <widget class="Line" name="line_3">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -152,7 +152,7 @@
         </property>
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -168,7 +168,7 @@
        <widget class="QSpinBox" name="spin_spc">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -181,7 +181,7 @@
        <widget class="Line" name="line">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -200,7 +200,7 @@
         </property>
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -222,7 +222,7 @@
         </property>
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -235,7 +235,7 @@
        <widget class="Line" name="line_2">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -248,7 +248,7 @@
        <widget class="QPushButton" name="button_spc">
         <property name="font">
          <font>
-          <family>等线</family>
+          <family>黑体</family>
           <pointsize>12</pointsize>
          </font>
         </property>
@@ -267,14 +267,19 @@
      <x>0</x>
      <y>0</y>
      <width>807</width>
-     <height>21</height>
+     <height>17</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <family>黑体</family>
+    </font>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="font">
     <font>
-     <family>等线</family>
+     <family>黑体</family>
      <pointsize>12</pointsize>
     </font>
    </property>

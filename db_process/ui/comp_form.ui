@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>640</width>
-    <height>480</height>
+    <width>667</width>
+    <height>658</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -32,7 +32,7 @@
        </property>
        <property name="font">
         <font>
-         <family>等线</family>
+         <family>黑体</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -54,7 +54,7 @@
        </property>
        <property name="font">
         <font>
-         <family>等线</family>
+         <family>黑体</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -67,7 +67,7 @@
       <widget class="Line" name="line">
        <property name="font">
         <font>
-         <family>等线</family>
+         <family>黑体</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -80,7 +80,7 @@
       <widget class="QGroupBox" name="groupBoxQualification">
        <property name="font">
         <font>
-         <family>等线</family>
+         <family>黑体</family>
          <pointsize>12</pointsize>
         </font>
        </property>
@@ -95,7 +95,7 @@
     <widget class="QTabWidget" name="tabWidget">
      <property name="font">
       <font>
-       <family>等线</family>
+       <family>黑体</family>
        <pointsize>12</pointsize>
       </font>
      </property>
@@ -161,10 +161,15 @@
            <item>
             <widget class="QGroupBox" name="groupBoxQSButton">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+              <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="font">
+              <font>
+               <family>黑体</family>
+              </font>
              </property>
              <property name="title">
               <string>拧紧枪故障统计图</string>
@@ -174,7 +179,44 @@
           </layout>
          </item>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayoutStaticFigure"/>
+          <layout class="QVBoxLayout" name="verticalLayout_3" stretch="1,2">
+           <item>
+            <widget class="QTableWidget" name="tableWidgetQSStatic">
+             <property name="rowCount">
+              <number>6</number>
+             </property>
+             <row/>
+             <row/>
+             <row/>
+             <row/>
+             <row/>
+             <row/>
+             <column>
+              <property name="text">
+               <string>QS号</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>状态描述</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>出现次数</string>
+              </property>
+             </column>
+             <column>
+              <property name="text">
+               <string>所占比例</string>
+              </property>
+             </column>
+            </widget>
+           </item>
+           <item>
+            <layout class="QVBoxLayout" name="verticalLayoutStaticFigure"/>
+           </item>
+          </layout>
          </item>
         </layout>
        </item>
@@ -188,6 +230,11 @@
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
+           </property>
            <property name="text">
             <string>当前状态</string>
            </property>
@@ -200,6 +247,11 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="font">
+            <font>
+             <family>黑体</family>
+            </font>
            </property>
           </widget>
          </item>
