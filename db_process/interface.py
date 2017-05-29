@@ -114,6 +114,7 @@ class MainWindow(QMainWindow):
         layout_figure = QtWidgets.QVBoxLayout()
         layout_figure.addWidget(self.figure_canvas_torque)
         self.ui.figure_torque.setLayout(layout_figure)
+        self.setWindowState(Qt.WindowMaximized)
 
         self.show()
 
@@ -572,11 +573,11 @@ class MainWindow(QMainWindow):
                                     self.comp_data.part_std[self.current_start_num:self.current_end_num],
                                     label="ID {} Mean".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
-        self.ax_torque_hist.hist(self.data.part_mean[self.current_start_num:self.current_end_num],
+        self.ax_torque_hist.hist(self.data.total_normal_data[self.current_start_num:self.current_end_num],
                                  np.arange(12., 25., 0.2), histtype="stepfilled",
                                  label="ID {} Hist".format(self.spindle_id))
         if self.comp_data is not None:
-            self.ax_torque_hist.hist(self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+            self.ax_torque_hist.hist(self.comp_data.total_normal_data[self.current_start_num:self.current_end_num],
                                      np.arange(12., 25., 0.2), histtype="stepfilled",
                                      label="ID {} Hist".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
@@ -605,11 +606,11 @@ class MainWindow(QMainWindow):
                                     self.comp_data.part_std[self.current_start_num:self.current_end_num],
                                     label="ID {} std".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
-        self.ax_torque_hist.hist(self.data.part_mean[self.current_start_num:self.current_end_num],
+        self.ax_torque_hist.hist(self.data.total_normal_data[self.current_start_num:self.current_end_num],
                                  np.arange(12., 25., 0.2), histtype="stepfilled",
                                  label="ID {} Hist".format(self.spindle_id))
         if self.comp_data is not None:
-            self.ax_torque_hist.hist(self.comp_data.part_mean[self.current_start_num:self.current_end_num],
+            self.ax_torque_hist.hist(self.comp_data.total_normal_data[self.current_start_num:self.current_end_num],
                                      np.arange(12., 25., 0.2), histtype="stepfilled",
                                      label="ID {} Hist".format(self.comp_spindle_id))
         self.ax_torque_std.legend()
