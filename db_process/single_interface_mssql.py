@@ -18,7 +18,7 @@ from PyQt5.QtCore import QDate, Qt
 from db_process.ui_mainwindow import Ui_MainWindow
 from db_process.ui_datewindow import Ui_Dialog
 
-from db_process.process_mssql import ScrewingDataProcess
+from db_process.single_process_mssql import ScrewingDataProcess
 from db_process.config import Configuration as cf
 
 

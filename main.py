@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import sys
 from PyQt5 import QtWidgets
-from db_process.interface import MainWindow
+from db_process.single_interface import MainWindow
 from db_process.welcome import WelcomeWindow
 
 if __name__ == '__main__':

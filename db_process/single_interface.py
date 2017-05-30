@@ -18,7 +18,7 @@ from PyQt5.QtCore import QDate, Qt, QThread, QTimer
 from db_process.ui_mainwindow import Ui_MainWindow
 from db_process.ui_datewindow import Ui_Dialog
 
-from db_process.process import ScrewingDataProcess
+from db_process.single_process import ScrewingDataProcess
 from db_process.config import Configuration as cf
 
 
@@ -249,7 +249,7 @@ class MainWindow(QMainWindow):
             return
         while True:
             import pypyodbc
-            from db_process.spindle_comp import SelectDialog
+            from db_process.multi import SelectDialog
             try:
                 self.select_dialog = SelectDialog(file_name, table_name, text_out=self.text_out)
                 self.select_dialog.show()

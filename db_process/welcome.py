@@ -33,7 +33,7 @@ class WelcomeWindow(QMainWindow):
         :return:
         """
         import pymssql
-        from db_process.fatigue_process_mssql import FatigueDialog
+        from db_process.fatigue import FatigueDialog
         try:
             self.fatigue_dialog = FatigueDialog(text_out=self.text_out, monitor=True)
             return True
@@ -53,7 +53,7 @@ class WelcomeWindow(QMainWindow):
         :return:
         """
         import pymssql
-        from db_process.spindle_comp_mssql import SelectDialog
+        from db_process.multi_mssql import SelectDialog
         try:
             self.select_dialog = SelectDialog(text_out=self.text_out)
             self.select_dialog.show()
@@ -71,7 +71,7 @@ class WelcomeWindow(QMainWindow):
             return
 
     def load_single_mssql(self):
-        from db_process.interface_mssql import MainWindow
+        from db_process.single_interface_mssql import MainWindow
         self.single_window = MainWindow()
 
     def load_fatigue(self):
@@ -115,7 +115,7 @@ class WelcomeWindow(QMainWindow):
             return
         while True:
             import pypyodbc
-            from db_process.spindle_comp import SelectDialog
+            from db_process.multi import SelectDialog
             try:
                 self.select_dialog = SelectDialog(file_name, table_name, text_out=self.text_out)
                 self.select_dialog.show()
@@ -130,5 +130,5 @@ class WelcomeWindow(QMainWindow):
                     return
 
     def load_single(self):
-        from db_process.interface import MainWindow
+        from db_process.single_interface import MainWindow
         self.single_window = MainWindow()

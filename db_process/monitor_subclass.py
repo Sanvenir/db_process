@@ -8,8 +8,8 @@ from PyQt5 import QtWidgets, QtCore
 from pandas import Series
 from datetime import datetime
 
-from db_process.interface import MainWindow
-from db_process.process import ScrewingDataProcess
+from db_process.single_interface import MainWindow
+from db_process.single_process import ScrewingDataProcess
 from db_process.database import CompDataBase
 
 
@@ -126,7 +126,7 @@ class MonitorMainWindow(MainWindow):
     def load_comp(self):
         while True:
             import pypyodbc
-            from db_process.spindle_comp import SelectDialog
+            from db_process.multi import SelectDialog
             try:
                 self.select_dialog = SelectDialog(self.file_name, self.table_name, text_out=self.text_out)
                 self.select_dialog.ui.checkBoxAllData.setChecked(True)
