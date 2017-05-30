@@ -1,10 +1,10 @@
-SELECT TOP {0} [Vertiscape].[dbo].[vScrewJobs].[Date], [Vertiscape].[caq].[ScrewingMeasurements].[QSCode] From [Vertiscape].[dbo].[vScrewJobs], [Vertiscape].[caq].[ScrewingMeasurements] WHERE [Vertiscape].[caq].[ScrewingMeasurements]=720 AND [Vertiscape].[caq].[ScrewingMeasurements].[General]=[Vertiscape].[dbo].[vScrewJobs].[General] AND [Vertiscape].[caq].[ScrewingMeasurements].[SpindleID]={1} ORDER BY  [Vertiscape].[caq].[ScrewingMeasurements].[ID] DESC
-SELECT TOP {0} [Vertiscape].[dbo].[vScrewJobs].[Date], [Vertiscape].[caq].[ScrewingMeasurements].[{1}] From [Vertiscape].[dbo].[vScrewJobs], [Vertiscape].[caq].[ScrewingMeasurements] WHERE [Vertiscape].[caq].[ScrewingMeasurements]=720 AND [Vertiscape].[caq].[ScrewingMeasurements].[General]=[Vertiscape].[dbo].[vScrewJobs].[General] AND [Vertiscape].[caq].[ScrewingMeasurements].[SpindleID]={1} AND OK=-1 ORDER BY  [Vertiscape].[caq].[ScrewingMeasurements].[ID] DESC
+SELECT TOP {0} [Date], [QSCode] From [View_1yyy] WHERE [SpindleID]={1} ORDER BY [ID] DESC
+SELECT TOP {0} [Date], [{1}] From [View_1yyy] WHERE [SpindleID]={2} AND [OK]=1 ORDER BY [ID] DESC
 
 
 
 
 
-SELECT TOP {0} [Vertiscape].[dbo].[vScrewJobs].[Date], [Vertiscape].[caq].[ScrewingMeasurements].[TorqueAct] From [Vertiscape].[dbo].[vScrewJobs], [Vertiscape].[caq].[ScrewingMeasurements] WHERE [Vertiscape].[caq].[ScrewingMeasurements]=720 AND [Vertiscape].[caq].[ScrewingMeasurements].[General]=[Vertiscape].[dbo].[vScrewJobs].[General] AND [Vertiscape].[caq].[ScrewingMeasurements].[QSCode]=1 AND [Vertiscape].[caq].[ScrewingMeasurements].[SpindleID]={1} ORDER BY  [Vertiscape].[caq].[ScrewingMeasurements].[ID] DESC
-SELECT TOP {0} [Vertiscape].[caq].[ScrewingMeasurements].[SpindleID], [Vertiscape].[dbo].[vScrewJobs].[Date], [Vertiscape].[caq].[ScrewingMeasurements].[QSCode] From [Vertiscape].[dbo].[vScrewJobs], [Vertiscape].[caq].[ScrewingMeasurements] WHERE [Vertiscape].[caq].[ScrewingMeasurements]=720 AND [Vertiscape].[caq].[ScrewingMeasurements].[General]=[Vertiscape].[dbo].[vScrewJobs].[General] ORDER BY  [Vertiscape].[caq].[ScrewingMeasurements].[ID] DESC
+SELECT TOP {0} [Date], [TorqueAct] From [View_1yyy] WHERE [QSCode]=1 AND [SpindleID]={1} ORDER BY  [ID] DESC
+SELECT TOP {0} [SpindleID], [Date], [TorqueAct], [QSCode] From [View_1yyy] ORDER BY  [ID] DESC
 
