@@ -88,7 +88,7 @@ class WelcomeWindow(QMainWindow):
             return
         while True:
             import pypyodbc
-            from db_process.fatigue_process import FatigueDialog
+            from db_process.fatigue_mssql import FatigueDialog
             try:
                 self.fatigue_dialog = FatigueDialog(file_name, table_name, text_out=self.text_out)
                 return True

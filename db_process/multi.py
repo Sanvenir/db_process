@@ -209,6 +209,9 @@ class CompWidget(QWidget):
     def check_static(self):
         data = self.parent().comp_data_process.data
         result = ""
+        if not self.parent().ui.checkBoxAllData.isChecked():
+            self.ui.textBrowserStatic.setText("需要获取最新数据进行判断")
+            pass
         for spindle_id in range(1, 23):
             if spindle_id not in data.keys():
                 self.ui.textBrowserStatic.setText("未获取所有拧紧枪数据")
@@ -375,7 +378,6 @@ class SelectDialog(QDialog):
             msg_box.setText("请至少选取一把拧紧枪")
             msg_box.exec_()
             return
-
 
 
 class LoadDialog(SelectDialog):

@@ -38,7 +38,6 @@ def log_load(cls):
         if self.data is None:
             return result
         self.ui.centralWidget.setEnabled(True)
-        self.ui.menuSetting.setEnabled(False)
         return result
     cls.load = new_load
     return cls
@@ -222,7 +221,7 @@ class MainWindow(QMainWindow):
             return
         while True:
             import pypyodbc
-            from db_process.fatigue_process import FatigueDialog
+            from db_process.fatigue_mssql import FatigueDialog
             try:
                 self.fatigue_dialog = FatigueDialog(file_name, table_name, text_out=self.text_out)
                 return True
@@ -343,6 +342,7 @@ class MainWindow(QMainWindow):
             self.ui.menuBar.setEnabled(True)
             self.ui.menuspc_figure.setEnabled(True)
             self.ui.menuPlotFrequence.setEnabled(True)
+            self.ui.menuSetting.setEnabled(True)
             self.comp_data = None
 
             # 以时间为横轴作图

@@ -15,7 +15,7 @@ from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 
 from db_process.database_mssql import FatigueDataBase
-import db_process.fatigue_process as origin
+import db_process.fatigue_mssql as origin
 
 
 class FatigueDataProcess(origin.FatigueDataProcess):

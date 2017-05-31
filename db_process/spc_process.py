@@ -6,6 +6,7 @@ matplotlib.use('Qt5Agg')
 from matplotlib import pyplot as plt
 from matplotlib.figure import Figure
 
+from PyQt5.QtCore import Qt
 from PyQt5 import QtWidgets, QtCore
 
 from pandas import Series
@@ -66,7 +67,6 @@ class SPCWindow(QtWidgets.QMainWindow):
         start = self.ui.spin_spc.value()
         end = self.ui.spin_spc.value() + self.ui.spin_range.value()
         ran = self.spc_range_series[start:end].mean() * 0.212
-
         cl = self.spc_mean_series[start:end].mean()
         ucl1 = cl + ran / 3
         ucl2 = cl + ran / 3 * 2
@@ -92,7 +92,7 @@ class SPCWindow(QtWidgets.QMainWindow):
         # 是否为“有点过界”
         for i in range(start, end):
             if self.spc_mean_series[i] > ucl3 or self.spc_mean_series[i] < lcl3:
-                self.ui.label_type.setText("有点过界")
+                self.ui.label_type.setText("有点过界：工序能力不足，接下来短期时间内扭矩值很有可能不达标。")
                 return
 
         # 是否为“倾向”
@@ -106,9 +106,9 @@ class SPCWindow(QtWidgets.QMainWindow):
                     break
             else:
                 if position:
-                    self.ui.label_type.setText("有上行倾向")
+                    self.ui.label_type.setText("有上行倾向：拧紧枪可能缓慢磨损，或不良件积累效应")
                 else:
-                    self.ui.label_type.setText("有下行倾向")
+                    self.ui.label_type.setText("有下行倾向：拧紧枪可能处于磨合期，或不良件积累效应")
                 return
 
         # 是否为“间断链”
@@ -123,7 +123,8 @@ class SPCWindow(QtWidgets.QMainWindow):
                     if self.spc_mean_series[i + j] < cl:
                         l_over_count += 1
                 if u_over_count > check_count or l_over_count > check_count:
-                    self.ui.label_type.setText("间断链")
+                    self.ui.label_type.setText("间断链被加工的工件可能更换批次，一批工件加工的扭矩大，"
+                                               "另一批工件加工扭矩小。")
                     return
 
         # 是否为链异常
@@ -135,7 +136,8 @@ class SPCWindow(QtWidgets.QMainWindow):
                 if position != (self.spc_mean_series[i + j] > cl) or self.spc_mean_series[i + j] == cl:
                     break
             else:
-                self.ui.label_type.setText("链异常")
+                self.ui.label_type.setText("链异常：被加工的工件可能更换批次，一批工件加工的扭矩大，"
+                                           "另一批工件加工扭矩小。")
                 return
 
         # 是否为“点屡屡接近控制线”
@@ -145,7 +147,7 @@ class SPCWindow(QtWidgets.QMainWindow):
                 if self.spc_mean_series[i + j] > ucl2 or self.spc_mean_series[i + j] < lcl2:
                     over_count += 1
             if over_count > 1:
-                self.ui.label_type.setText("点屡屡接近控制线")
+                self.ui.label_type.setText("点屡屡接近控制线：虽未过界，但过界趋势较为明显")
                 return
 
         self.ui.label_type.setText("正常")

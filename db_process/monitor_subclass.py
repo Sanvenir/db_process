@@ -146,7 +146,7 @@ class MonitorMainWindow(MainWindow):
         """
         while True:
             import pypyodbc
-            from db_process.fatigue_process import FatigueDialog
+            from db_process.fatigue_mssql import FatigueDialog
             try:
                 self.fatigue_dialog = FatigueDialog(self.file_name, self.table_name, text_out=self.text_out,
                                                     monitor=True)
