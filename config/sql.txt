@@ -6,5 +6,5 @@ SELECT Date, QSCode From {0} WHERE SpindleID={1} AND DateDiff('d', '{2}', Date)>
 SELECT Date, {0} From {1} WHERE SpindleID={2} AND OK=-1 AND DateDiff('d', '{3}', Date)>0 AND DateDiff('d', '{4}', Date)<0
 SELECT Date, TorqueAct FROM {0} WHERE DateDiff('d', '{1}', Date)>0 AND QSCode=1 AND SpindleID={2}
 SELECT TOP {0} Date, TorqueAct FROM {1} WHERE QSCode=1 AND SpindleID={2} ORDER BY ID DESC
-SELECT TOP {1} SpindleID, Date, TorqueAct, QSCode FROM {0} ORDER BY ID DESC
+SELECT SpindleID, Date, TorqueAct, QSCode FROM {0} ORDER BY ID DESC
 SELECT SpindleID, Date, TorqueAct, QSCode FROM {0} WHERE DateDiff('d', '{1}', Date)>0 AND DateDiff('d', '{2}', Date)<0

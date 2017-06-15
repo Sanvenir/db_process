@@ -210,7 +210,7 @@ class CompWidget(QWidget):
         data = self.parent().comp_data_process.data
         result = ""
         if not self.parent().ui.checkBoxAllData.isChecked():
-            self.ui.textBrowserStatic.setText("需要获取最新数据进行判断")
+            # self.ui.textBrowserStatic.setText("需要获取最新数据进行判断")
             pass
         for spindle_id in range(1, 23):
             if spindle_id not in data.keys():
